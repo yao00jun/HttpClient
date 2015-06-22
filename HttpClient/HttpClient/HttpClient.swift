@@ -341,8 +341,8 @@ class HttpClient:NSOperation,NSURLConnectionDataDelegate{
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
             self.increaseTaskCount()
         })
-        if operationParameters != nil{
-            //添加参数
+        if operationParameters != nil{             //添加参数
+            addParametersToRequest(operationParameters!)
         }
         if userAgent != nil{
             operationRequest?.setValue(userAgent!, forHTTPHeaderField: "User-Agent")
