@@ -14,7 +14,6 @@
 		9D8F90301B379145009DD0A4 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9D8F902E1B379145009DD0A4 /* LaunchScreen.xib */; };
 		9D8F903C1B379145009DD0A4 /* HttpClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D8F903B1B379145009DD0A4 /* HttpClientTests.swift */; };
 		9D8F90461B37915A009DD0A4 /* HttpClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D8F90451B37915A009DD0A4 /* HttpClient.swift */; };
-		9D8F904A1B379D25009DD0A4 /* HttpClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D8F90491B379D25009DD0A4 /* HttpClient.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,8 +39,6 @@
 		9D8F903B1B379145009DD0A4 /* HttpClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpClientTests.swift; sourceTree = "<group>"; };
 		9D8F90451B37915A009DD0A4 /* HttpClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HttpClient.swift; sourceTree = "<group>"; };
 		9D8F90471B379D25009DD0A4 /* HttpClient-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "HttpClient-Bridging-Header.h"; sourceTree = "<group>"; };
-		9D8F90481B379D25009DD0A4 /* HttpClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HttpClient.h; sourceTree = "<group>"; };
-		9D8F90491B379D25009DD0A4 /* HttpClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HttpClient.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,8 +80,6 @@
 		9D8F90221B379145009DD0A4 /* HttpClient */ = {
 			isa = PBXGroup;
 			children = (
-				9D8F90481B379D25009DD0A4 /* HttpClient.h */,
-				9D8F90491B379D25009DD0A4 /* HttpClient.m */,
 				9D8F90251B379145009DD0A4 /* AppDelegate.swift */,
 				9D8F90271B379145009DD0A4 /* ViewController.swift */,
 				9D8F90291B379145009DD0A4 /* Main.storyboard */,
@@ -224,7 +219,6 @@
 			files = (
 				9D8F90281B379145009DD0A4 /* ViewController.swift in Sources */,
 				9D8F90461B37915A009DD0A4 /* HttpClient.swift in Sources */,
-				9D8F904A1B379D25009DD0A4 /* HttpClient.m in Sources */,
 				9D8F90261B379145009DD0A4 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -426,6 +420,7 @@
 				9D8F90411B379145009DD0A4 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		9D8F90421B379145009DD0A4 /* Build configuration list for PBXNativeTarget "HttpClientTests" */ = {
 			isa = XCConfigurationList;
@@ -434,6 +429,7 @@
 				9D8F90441B379145009DD0A4 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
