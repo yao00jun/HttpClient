@@ -14,7 +14,7 @@ enum httpMethod{
     case Delete
     case Head
 }
-enum HttpClientRequestState{
+private enum HttpClientRequestState{
     case Ready
     case Executing
     case Finished
@@ -28,9 +28,9 @@ class HttpClient:NSOperation,NSURLConnectionDataDelegate{
         static let UserAgent = "UserAgent"
         static let CachePolicy = "CachePolicy" //当使用缓存时设置CachePolicy无效
         static let SendParametersAsJSON  = "SendParametersAsJSON"
-        static let BasePath = "BasePath"
         static let UserName = "UserName"
         static let Password = "Password"
+        static let SavePath = "SavePath"
         static let UseFileName = "UseFileName"
     }
     
@@ -50,7 +50,6 @@ class HttpClient:NSOperation,NSURLConnectionDataDelegate{
     }
     private static var taskCount:UInt = 0
     private static var GlobalTimeoutInterval:NSTimeInterval = 20
-    private static var GlobalBasePath:String?
     private static var GlobalUserAgent:String = "HttpClient" //need check
     private static var GlobalCachePolicy:NSURLRequestCachePolicy = NSURLRequestCachePolicy.UseProtocolCachePolicy
     private static var GlobalNeedSendParametersAsJSON = false
@@ -111,7 +110,6 @@ class HttpClient:NSOperation,NSURLConnectionDataDelegate{
     private var userAgent:String?   //这个可用一个option来设定 作为单次请求的参数
     private var timeoutInterval:NSTimeInterval //这个可以用一个Option来设定，作为单次请求的参数
     private var cachePolicy:NSURLRequestCachePolicy = NSURLRequestCachePolicy.UseProtocolCachePolicy  //这个可以用一个Option来设定，作为单次请求的参数
-    private var basePath:String?  //保存的一个基本路径
     private var sendParametersAsJSON:Bool?
     private var Username:String?
     private var Password:String?
@@ -136,10 +134,6 @@ class HttpClient:NSOperation,NSURLConnectionDataDelegate{
     
     static func setGlobelCachePolicy(cachePolicy:NSURLRequestCachePolicy){
         HttpClient.GlobalCachePolicy = cachePolicy
-    }
-    
-    static func setGlobalBasePath(basePath:String){
-        HttpClient.GlobalBasePath = basePath
     }
 
     static func setGlobalNeedSendParametersAsJSON(sendParametersAsJSON:Bool){
@@ -195,66 +189,65 @@ class HttpClient:NSOperation,NSURLConnectionDataDelegate{
     }
     
     static func get(address:String,parameters:Dictionary<String,AnyObject>?,cache:Int,cancelToken:String?,complettion:(response:AnyObject?,urlResponse:NSHTTPURLResponse?,error:NSError?)->()) ->HttpClient{
-        var httpClient = HttpClient(address: address, method: httpMethod.Get, parameters: parameters, cache: cache, saveToPath: nil, cancelToken: cancelToken, queryPara:nil, requestOptions:nil,headerFields:nil, progress: nil, complettion: complettion)
+        var httpClient = HttpClient(address: address, method: httpMethod.Get, parameters: parameters, cache: cache, cancelToken: cancelToken, queryPara:nil, requestOptions:nil,headerFields:nil, progress: nil, complettion: complettion)
         httpClient.requestPath = httpClient.operationRequest?.URL?.absoluteString
         self.operationQueue.addOperation(httpClient)
         return httpClient
     }
     
-    static func get(address:String,method:httpMethod,parameters:Dictionary<String,AnyObject>?, cache:Int,saveToPath:String?,cancelToken:String?, requestOptions:Dictionary<String,AnyObject>?,headerFields:Dictionary<String,AnyObject>?, progress:((progress:Float)->())?,complettion:(response:AnyObject?,urlResponse:NSHTTPURLResponse?,error:NSError?)->()) ->HttpClient {
-        var httpClient = HttpClient(address: address, method: httpMethod.Get, parameters: parameters, cache: cache, saveToPath: saveToPath, cancelToken: cancelToken, queryPara:nil, requestOptions:requestOptions,headerFields:headerFields, progress: progress, complettion: complettion)
+    static func get(address:String,method:httpMethod,parameters:Dictionary<String,AnyObject>?, cache:Int,cancelToken:String?, requestOptions:Dictionary<String,AnyObject>?,headerFields:Dictionary<String,AnyObject>?, progress:((progress:Float)->())?,complettion:(response:AnyObject?,urlResponse:NSHTTPURLResponse?,error:NSError?)->()) ->HttpClient {
+        var httpClient = HttpClient(address: address, method: httpMethod.Get, parameters: parameters, cache: cache, cancelToken: cancelToken, queryPara:nil, requestOptions:requestOptions,headerFields:headerFields, progress: progress, complettion: complettion)
         httpClient.requestPath = httpClient.operationRequest?.URL?.absoluteString
         self.operationQueue.addOperation(httpClient)
         return httpClient
     }
     
     static func Post(address:String,method:httpMethod,parameters:Dictionary<String,AnyObject>?, cache:Int,cancelToken:String?, complettion:(response:AnyObject?,urlResponse:NSHTTPURLResponse?,error:NSError?)->()) ->HttpClient{
-        var httpClient = HttpClient(address: address, method: httpMethod.Post, parameters: parameters, cache: cache, saveToPath: nil, cancelToken: cancelToken, queryPara:nil, requestOptions:nil,headerFields:nil, progress: nil, complettion: complettion)
+        var httpClient = HttpClient(address: address, method: httpMethod.Post, parameters: parameters, cache: cache, cancelToken: cancelToken, queryPara:nil, requestOptions:nil,headerFields:nil, progress: nil, complettion: complettion)
         httpClient.requestPath = httpClient.operationRequest?.URL?.absoluteString
         self.operationQueue.addOperation(httpClient)
         return httpClient
     }
     
-    static func Post(address:String,method:httpMethod,parameters:Dictionary<String,AnyObject>?, cache:Int,saveToPath:String?,cancelToken:String?,queryPara:Dictionary<String,AnyObject>?,complettion:(response:AnyObject?,urlResponse:NSHTTPURLResponse?,error:NSError?)->()) -> HttpClient{
-        var httpClient = HttpClient(address: address, method: httpMethod.Post, parameters: parameters, cache: cache, saveToPath: saveToPath, cancelToken: cancelToken, queryPara:nil, requestOptions:nil,headerFields:nil, progress: nil, complettion: complettion)
+    static func Post(address:String,method:httpMethod,parameters:Dictionary<String,AnyObject>?, cache:Int,cancelToken:String?,queryPara:Dictionary<String,AnyObject>?,complettion:(response:AnyObject?,urlResponse:NSHTTPURLResponse?,error:NSError?)->()) -> HttpClient{
+        var httpClient = HttpClient(address: address, method: httpMethod.Post, parameters: parameters, cache: cache,  cancelToken: cancelToken, queryPara:nil, requestOptions:nil,headerFields:nil, progress: nil, complettion: complettion)
         httpClient.requestPath = httpClient.operationRequest?.URL?.absoluteString
         self.operationQueue.addOperation(httpClient)
         return httpClient
     }
     
-    static func Post(address:String,method:httpMethod,parameters:Dictionary<String,AnyObject>?, cache:Int,saveToPath:String?,cancelToken:String?,queryPara:Dictionary<String,AnyObject>?, requestOptions:Dictionary<String,AnyObject>?,headerFields:Dictionary<String,AnyObject>?, progress:((progress:Float)->())?,complettion:(response:AnyObject?,urlResponse:NSHTTPURLResponse?,error:NSError?)->()) -> HttpClient{
-        var httpClient = HttpClient(address: address, method: httpMethod.Post, parameters: parameters, cache: cache, saveToPath: saveToPath, cancelToken: cancelToken, queryPara:queryPara, requestOptions:requestOptions,headerFields:headerFields, progress: progress, complettion: complettion)
+    static func Post(address:String,method:httpMethod,parameters:Dictionary<String,AnyObject>?, cache:Int,cancelToken:String?,queryPara:Dictionary<String,AnyObject>?, requestOptions:Dictionary<String,AnyObject>?,headerFields:Dictionary<String,AnyObject>?, progress:((progress:Float)->())?,complettion:(response:AnyObject?,urlResponse:NSHTTPURLResponse?,error:NSError?)->()) -> HttpClient{
+        var httpClient = HttpClient(address: address, method: httpMethod.Post, parameters: parameters, cache: cache, cancelToken: cancelToken, queryPara:queryPara, requestOptions:requestOptions,headerFields:headerFields, progress: progress, complettion: complettion)
         httpClient.requestPath = httpClient.operationRequest?.URL?.absoluteString
         self.operationQueue.addOperation(httpClient)
         return httpClient
     }
     
     static func Delete(address:String,method:httpMethod,parameters:Dictionary<String,AnyObject>?, cache:Int,cancelToken:String?,complettion:(response:AnyObject?,urlResponse:NSHTTPURLResponse?,error:NSError?)->()) -> HttpClient{
-        var httpClient = HttpClient(address: address, method: httpMethod.Delete, parameters: parameters, cache: cache, saveToPath: nil, cancelToken: cancelToken, queryPara:nil, requestOptions:nil,headerFields:nil, progress: nil, complettion: complettion)
+        var httpClient = HttpClient(address: address, method: httpMethod.Delete, parameters: parameters, cache: cache,cancelToken: cancelToken, queryPara:nil, requestOptions:nil,headerFields:nil, progress: nil, complettion: complettion)
         httpClient.requestPath = httpClient.operationRequest?.URL?.absoluteString
         self.operationQueue.addOperation(httpClient)
         return httpClient
     }
 
-    static func Put(address:String,method:httpMethod,parameters:Dictionary<String,AnyObject>?, cache:Int,saveToPath:String?,cancelToken:String?, requestOptions:Dictionary<String,AnyObject>?,headerFields:Dictionary<String,AnyObject>?, progress:((progress:Float)->())?,complettion:(response:AnyObject?,urlResponse:NSHTTPURLResponse?,error:NSError?)->()) -> HttpClient{
-        var httpClient = HttpClient(address: address, method: httpMethod.Put, parameters: parameters, cache: cache, saveToPath: saveToPath, cancelToken: cancelToken, queryPara:nil, requestOptions:requestOptions,headerFields:headerFields, progress: progress, complettion: complettion)
+    static func Put(address:String,method:httpMethod,parameters:Dictionary<String,AnyObject>?, cache:Int,cancelToken:String?, requestOptions:Dictionary<String,AnyObject>?,headerFields:Dictionary<String,AnyObject>?, progress:((progress:Float)->())?,complettion:(response:AnyObject?,urlResponse:NSHTTPURLResponse?,error:NSError?)->()) -> HttpClient{
+        var httpClient = HttpClient(address: address, method: httpMethod.Put, parameters: parameters, cache: cache, cancelToken: cancelToken, queryPara:nil, requestOptions:requestOptions,headerFields:headerFields, progress: progress, complettion: complettion)
         httpClient.requestPath = httpClient.operationRequest?.URL?.absoluteString
         self.operationQueue.addOperation(httpClient)
         return httpClient
     }
 
-    static func Head(address:String,method:httpMethod,parameters:Dictionary<String,AnyObject>?, cache:Int,saveToPath:String?,cancelToken:String?, requestOptions:Dictionary<String,AnyObject>?,headerFields:Dictionary<String,AnyObject>?, progress:((progress:Float)->())?,complettion:(response:AnyObject?,urlResponse:NSHTTPURLResponse?,error:NSError?)->()) -> HttpClient{
-        var httpClient = HttpClient(address: address, method: httpMethod.Head, parameters: parameters, cache: cache, saveToPath: saveToPath, cancelToken: cancelToken, queryPara:nil, requestOptions:requestOptions,headerFields:headerFields, progress: progress, complettion: complettion)
+    static func Head(address:String,method:httpMethod,parameters:Dictionary<String,AnyObject>?, cache:Int,cancelToken:String?, requestOptions:Dictionary<String,AnyObject>?,headerFields:Dictionary<String,AnyObject>?, progress:((progress:Float)->())?,complettion:(response:AnyObject?,urlResponse:NSHTTPURLResponse?,error:NSError?)->()) -> HttpClient{
+        var httpClient = HttpClient(address: address, method: httpMethod.Head, parameters: parameters, cache: cache, cancelToken: cancelToken, queryPara:nil, requestOptions:requestOptions,headerFields:headerFields, progress: progress, complettion: complettion)
         httpClient.requestPath = httpClient.operationRequest?.URL?.absoluteString
         self.operationQueue.addOperation(httpClient)
         return httpClient
     }
     
     // MARK: private func
-    private init(address:String,method:httpMethod,parameters:Dictionary<String,AnyObject>?, cache:Int,saveToPath:String?,cancelToken:String?,queryPara:Dictionary<String,AnyObject>?, requestOptions:Dictionary<String,AnyObject>?,headerFields:Dictionary<String,AnyObject>?, progress:((progress:Float)->())?,complettion:(response:AnyObject?,urlResponse:NSHTTPURLResponse?,error:NSError?)->()){
+    private init(address:String,method:httpMethod,parameters:Dictionary<String,AnyObject>?, cache:Int,cancelToken:String?,queryPara:Dictionary<String,AnyObject>?, requestOptions:Dictionary<String,AnyObject>?,headerFields:Dictionary<String,AnyObject>?, progress:((progress:Float)->())?,complettion:(response:AnyObject?,urlResponse:NSHTTPURLResponse?,error:NSError?)->()){
         operationCompletion = complettion
         operationProgress = progress
-        operationSavePath = saveToPath
         operationParameters = parameters
         queryParameters = queryPara
         timeoutInterval = HttpClient.GlobalTimeoutInterval
@@ -263,6 +256,7 @@ class HttpClient:NSOperation,NSURLConnectionDataDelegate{
         self.cancelToken = cancelToken
         saveDataDispatchGroup = dispatch_group_create()
         saveDataDispatchQueue = dispatch_queue_create("HttpClient", DISPATCH_QUEUE_SERIAL)
+        
         if let url  = NSURL(string: address){
             operationRequest = NSMutableURLRequest(URL: url)
         }
@@ -273,9 +267,7 @@ class HttpClient:NSOperation,NSURLConnectionDataDelegate{
         if cacheTime > 0{
             cacheTime = cache
         }
-        if method != httpMethod.Post && saveToPath == nil{
-            operationRequest?.HTTPShouldUsePipelining = true
-        }
+
         switch(method){
             case .Get: operationRequest?.HTTPMethod = "GET"
             case .Post: operationRequest?.HTTPMethod = "POST"
@@ -288,8 +280,8 @@ class HttpClient:NSOperation,NSURLConnectionDataDelegate{
         Password = HttpClient.GlobalPassword
         if requestOptions != nil{
             for (key,value) in requestOptions!{
-                if key == HttpClientOption.BasePath{
-                    basePath = value as? String
+                if key == HttpClientOption.SavePath{
+                    operationSavePath = value as? String
                 }
                 if key == HttpClientOption.CachePolicy{
                     if let policy = value as? NSURLRequestCachePolicy{
@@ -323,6 +315,9 @@ class HttpClient:NSOperation,NSURLConnectionDataDelegate{
         }
         super.init()
         httpClientRequestState = HttpClientRequestState.Ready
+        if method != httpMethod.Post && operationSavePath == nil{
+            operationRequest?.HTTPShouldUsePipelining = true
+        }
         //这个要放在super.init()后面才行
         //这个地方以后需要研究
     }
@@ -617,8 +612,8 @@ class HttpClient:NSOperation,NSURLConnectionDataDelegate{
                              postData.appendData(NSString(format: "--%@\r\n", boundary).dataUsingEncoding(NSUTF8StringEncoding)!)
                             var imgExtension = value.getImageType()
                             if imgExtension != nil{
-                                if useFileName{
-                                    postData.appendData(NSString(format: "Content-Disposition: attachment; name=\"%@\"; filename=\"userfile%d%x.%@\"\r\n", key,NSDate(timeIntervalSince1970: 0),imgExtension!).dataUsingEncoding(NSUTF8StringEncoding)!)
+                                if useFileName{  // 实际上无法从NSData中获取文件名,所要想要用原始文件名上传,需要把key当作文件名传进来
+                                    postData.appendData(NSString(format: "Content-Disposition: attachment; name=\"%@\"; filename=\"userfile%d%x.%@\"\r\n", key,key,imgExtension!).dataUsingEncoding(NSUTF8StringEncoding)!)
                                 }
                                 else{
                                     postData.appendData(NSString(format: "Content-Disposition: attachment; name=\"%@\"; filename=\"userfile%d%x.%@\"\r\n", key,NSDate(timeIntervalSince1970: 0),imgExtension!).dataUsingEncoding(NSUTF8StringEncoding)!)
