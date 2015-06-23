@@ -9,11 +9,12 @@
 /* Begin PBXBuildFile section */
 		9D8F90261B379145009DD0A4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D8F90251B379145009DD0A4 /* AppDelegate.swift */; };
 		9D8F90281B379145009DD0A4 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D8F90271B379145009DD0A4 /* ViewController.swift */; };
-		9D8F902B1B379145009DD0A4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9D8F90291B379145009DD0A4 /* Main.storyboard */; };
 		9D8F902D1B379145009DD0A4 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9D8F902C1B379145009DD0A4 /* Images.xcassets */; };
 		9D8F90301B379145009DD0A4 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9D8F902E1B379145009DD0A4 /* LaunchScreen.xib */; };
 		9D8F903C1B379145009DD0A4 /* HttpClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D8F903B1B379145009DD0A4 /* HttpClientTests.swift */; };
 		9D8F90461B37915A009DD0A4 /* HttpClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D8F90451B37915A009DD0A4 /* HttpClient.swift */; };
+		A29A97B61B390FE900138012 /* TxtViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A29A97B51B390FE900138012 /* TxtViewController.swift */; };
+		A29A97B91B393B7C00138012 /* ImgViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A29A97B81B393B7C00138012 /* ImgViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -31,14 +32,15 @@
 		9D8F90241B379145009DD0A4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9D8F90251B379145009DD0A4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9D8F90271B379145009DD0A4 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		9D8F902A1B379145009DD0A4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		9D8F902C1B379145009DD0A4 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		9D8F902F1B379145009DD0A4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		9D8F90351B379145009DD0A4 /* HttpClientTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HttpClientTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		9D8F903A1B379145009DD0A4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9D8F903B1B379145009DD0A4 /* HttpClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpClientTests.swift; sourceTree = "<group>"; };
 		9D8F90451B37915A009DD0A4 /* HttpClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HttpClient.swift; sourceTree = "<group>"; };
-		9D8F90471B379D25009DD0A4 /* HttpClient-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "HttpClient-Bridging-Header.h"; sourceTree = "<group>"; };
+		A29A97B51B390FE900138012 /* TxtViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TxtViewController.swift; sourceTree = "<group>"; };
+		A29A97B71B39395A00138012 /* HttpClient-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "HttpClient-Bridging-Header.h"; sourceTree = "<group>"; };
+		A29A97B81B393B7C00138012 /* ImgViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImgViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -80,14 +82,12 @@
 		9D8F90221B379145009DD0A4 /* HttpClient */ = {
 			isa = PBXGroup;
 			children = (
-				9D8F90251B379145009DD0A4 /* AppDelegate.swift */,
 				9D8F90271B379145009DD0A4 /* ViewController.swift */,
-				9D8F90291B379145009DD0A4 /* Main.storyboard */,
-				9D8F902C1B379145009DD0A4 /* Images.xcassets */,
-				9D8F902E1B379145009DD0A4 /* LaunchScreen.xib */,
+				A29A97B51B390FE900138012 /* TxtViewController.swift */,
+				A29A97B81B393B7C00138012 /* ImgViewController.swift */,
 				9D8F90231B379145009DD0A4 /* Supporting Files */,
 				9D8F90451B37915A009DD0A4 /* HttpClient.swift */,
-				9D8F90471B379D25009DD0A4 /* HttpClient-Bridging-Header.h */,
+				A29A97B71B39395A00138012 /* HttpClient-Bridging-Header.h */,
 			);
 			path = HttpClient;
 			sourceTree = "<group>";
@@ -95,6 +95,9 @@
 		9D8F90231B379145009DD0A4 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				9D8F90251B379145009DD0A4 /* AppDelegate.swift */,
+				9D8F902C1B379145009DD0A4 /* Images.xcassets */,
+				9D8F902E1B379145009DD0A4 /* LaunchScreen.xib */,
 				9D8F90241B379145009DD0A4 /* Info.plist */,
 			);
 			name = "Supporting Files";
@@ -197,7 +200,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9D8F902B1B379145009DD0A4 /* Main.storyboard in Resources */,
 				9D8F90301B379145009DD0A4 /* LaunchScreen.xib in Resources */,
 				9D8F902D1B379145009DD0A4 /* Images.xcassets in Resources */,
 			);
@@ -217,7 +219,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A29A97B91B393B7C00138012 /* ImgViewController.swift in Sources */,
 				9D8F90281B379145009DD0A4 /* ViewController.swift in Sources */,
+				A29A97B61B390FE900138012 /* TxtViewController.swift in Sources */,
 				9D8F90461B37915A009DD0A4 /* HttpClient.swift in Sources */,
 				9D8F90261B379145009DD0A4 /* AppDelegate.swift in Sources */,
 			);
@@ -242,14 +246,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		9D8F90291B379145009DD0A4 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				9D8F902A1B379145009DD0A4 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		9D8F902E1B379145009DD0A4 /* LaunchScreen.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -347,7 +343,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = HttpClient/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "HttpClient/HttpClient-Bridging-Header.h";
@@ -360,7 +359,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = HttpClient/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "HttpClient/HttpClient-Bridging-Header.h";
