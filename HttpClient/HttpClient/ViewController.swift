@@ -35,8 +35,9 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
         tbMain.frame = CGRect(x: 0, y: 0, width: UIScreen.mainScreen().bounds.size.width, height: UIScreen.mainScreen().bounds.height - 50)
         view.addSubview(tbMain)
         var btnBar = UIBarButtonItem(title: "取消", style: UIBarButtonItemStyle.Plain, target: self, action: "cancelRequest")
-        navigationItem.rightBarButtonItem = btnBar
-        dataStream = NSMutableData()
+        var btnClearCache = UIBarButtonItem(title: "缓存", style: UIBarButtonItemStyle.Plain, target: self, action: "clearCache")
+        navigationItem.rightBarButtonItems = [btnBar,btnClearCache]
+
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -56,7 +57,7 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
         var str = arrStrs[indexPath.row]
         switch (str){
         case "get":
-            HttpClient.get("http://www.baidu.com", parameters: nil, cache: 200, cancelToken: nil, complettion: { (response, urlResponse, error) -> () in
+            HttpClient.get("http://www.baidu.com", parameters: nil, cache: 20, cancelToken: nil, complettion: { (response, urlResponse, error) -> () in
                 if error != nil{
                     println("there is a error\(error)")
                     return
@@ -97,10 +98,16 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
     
     func cancelRequest(){
         HttpClient.cancelRequestWithIndentity("img")
-        var request = NSMutableURLRequest(URL:NSURL(string: "http://www.baidu.com")!, cachePolicy: NSURLRequestCachePolicy.ReturnCacheDataDontLoad, timeoutInterval: 50)
+        var request = NSMutableURLRequest(URL:NSURL(string: "http://www.baidu.com")!, cachePolicy: NSURLRequestCachePolicy.ReturnCacheDataElseLoad, timeoutInterval: 50)
         var conn = NSURLConnection(request: request, delegate: self, startImmediately: false)
+                dataStream = NSMutableData()
         conn?.start()
     }
+    
+    func clearCache(){
+        HttpClient.clearCache()
+    }
+    
     func connection(connection: NSURLConnection, didReceiveData data: NSData) {
         dataStream?.appendData(data)
     }
