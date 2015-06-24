@@ -388,6 +388,8 @@ class HttpClient:NSOperation,NSURLConnectionDataDelegate{
             }
             else{
                 assert(false, "error path")
+                var exception = NSException(name: "Invalid path", reason: "you provide a invalid path", userInfo: [NSInvalidArgumentException:operationSavePath!])
+               exception.raise()
             }
         }
         operationData = NSMutableData() //即使保存数据,也是要加载的
@@ -487,7 +489,8 @@ class HttpClient:NSOperation,NSURLConnectionDataDelegate{
                    self.operationConnection?.cancel()
                     var info:Dictionary<String,AnyObject> = [NSFilePathErrorKey:self.operationSavePath!]
                     var writeError = NSError(domain: "HttpClientRequestWriteError", code: 0, userInfo: info)
-                    assert(false, writeError.localizedFailureReason!)
+                    var exception = NSException(name: "write data file", reason: "You provide a invalid path the you can not write data in the path", userInfo: [NSInvalidArgumentException:writeError])
+                    exception.raise()
                 }
             }
             self.operationData!.appendData(data) //下载的同时也是可以接到到数据的
@@ -602,6 +605,8 @@ class HttpClient:NSOperation,NSURLConnectionDataDelegate{
                 var jsonData = NSJSONSerialization.dataWithJSONObject(parameters, options: NSJSONWritingOptions.allZeros, error: &Error)
                 if Error != nil{
                     assert(false, "you use sendParametersAsJSON but the parameter contain invalid data")
+                    var exception = NSException(name: "InValidPara", reason: "POST and PUT parameters must be provided as NSDictionary or NSArray when sendParametersAsJSON is set to YES.", userInfo: [NSInvalidArgumentException:"POST and PUT parameters must be provided as NSDictionary or NSArray when sendParametersAsJSON is set to YES."])
+                    exception.raise()
                 }
                 operationRequest?.HTTPBody = jsonData
             }
@@ -614,6 +619,8 @@ class HttpClient:NSOperation,NSURLConnectionDataDelegate{
                     }
                     else if !(value is String) && !(value is NSString) && !(value is NSNumber){
                         assert(false, "\(operationRequest!.HTTPMethod)requests only accept NSString and NSNumber parameters.")
+                        var exception = NSException(name: "InValidPara", reason: "\(operationRequest!.HTTPMethod)requests only accept NSString and NSNumber parameters.", userInfo: [NSInvalidArgumentException:"\(operationRequest!.HTTPMethod)requests only accept NSString and NSNumber parameters."])
+                        exception.raise()
                     }
                 }
                 if !hasData{
@@ -669,9 +676,11 @@ class HttpClient:NSOperation,NSURLConnectionDataDelegate{
         }
         else {
             var baseAddress = operationRequest!.URL!.absoluteString!
-            if queryParameters!.count > 0{
-                baseAddress = baseAddress + "?\(parameterStringForDictionary(queryParameters!))"
-                operationRequest!.URL = NSURL(string: baseAddress)
+            if operationParameters != nil {
+                if operationParameters!.count > 0{
+                    baseAddress = baseAddress + "?\(parameterStringForDictionary(operationParameters!))"
+                    operationRequest!.URL = NSURL(string: baseAddress)
+                }
             }
         }
     }
@@ -735,7 +744,10 @@ class HttpClient:NSOperation,NSURLConnectionDataDelegate{
                 arrParamters.append("\(key)=\(value)")
             }
             else{
-                assert(false, "invalid parameter")
+                assert(false, "GET and DELETE parameters must be provided as NSDictionary")
+                var exception = NSException(name: "InValidPara", reason: "GET and DELETE parameters must be provided as NSDictionary.", userInfo: [NSInvalidArgumentException:"GET and DELETE parameters must be provided as NSDictionary"])
+                exception.raise()
+
             }
         }
         return arrParamters.concat("&")

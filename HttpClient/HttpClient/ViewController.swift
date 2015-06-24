@@ -74,8 +74,8 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
                 var path: AnyObject? = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.UserDomainMask, true).first
                 var myPath = (path as! NSString).stringByAppendingPathComponent("img.jpg")
                 var httpOption = [HttpClientOption.SavePath:myPath,HttpClientOption.TimeOut:NSNumber(int: 100)]
-                
-            HttpClient.get("http://img1.gamersky.com/image2015/05/20150523ge_4/gamersky_10origin_19_20155231446302.jpg", parameters: nil, cache: 100, cancelToken: "img", requestOptions: httpOption, headerFields: nil, progress: { (progress) -> () in
+                var para = ["a":"123"]
+            HttpClient.get("http://img1.gamersky.com/image2015/05/20150523ge_4/gamersky_10origin_19_20155231446302.jpg", parameters: para, cache: 100, cancelToken: "img", requestOptions: httpOption, headerFields: nil, progress: { (progress) -> () in
                 println(progress)
             }, complettion: { (response, urlResponse, error) -> () in
                 if error != nil{
