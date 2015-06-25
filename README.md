@@ -17,3 +17,15 @@ Version: 1.0.0   copy right: Gforce,
         // set request time out ,the default value is 20
       HttpClient.setGlobalUserAgent("Firefox") 
         // set User Agent the default if HttpClient
+* after set these global features you can use if very simple
+*  HttpClient.get("http://www.163.com", parameters: nil, cache: 20, cancelToken: nil, complettion: { (response, urlResponse, error) -> () in
+                if error != nil{
+                    println("there is a error\(error)")
+                    return
+                }
+                if let data = response as? NSData{
+                    if let result = NSString(data: data, encoding: NSUTF8StringEncoding){
+                      println(result)
+                    }
+                }
+            })
