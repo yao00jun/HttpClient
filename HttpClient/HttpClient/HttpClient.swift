@@ -411,6 +411,7 @@ class HttpClient:NSOperation,NSURLConnectionDataDelegate{
                         dispatch_group_notify(saveDataDispatchGroup, saveDataDispatchQueue) { () -> Void in
                              self.callCompletionBlockWithResponse(data, error: nil)
                         }
+                        cancel()
                         return
                     }
                 }
@@ -639,27 +640,26 @@ class HttpClient:NSOperation,NSURLConnectionDataDelegate{
                         if !(value is NSData){
                             postData.appendData(NSString(format: "--%@\r\n", boundary).dataUsingEncoding(NSUTF8StringEncoding)!)
                             postData.appendData(NSString(format: "Content-Disposition: form-data; name=\"%@\"\r\n\r\n", key).dataUsingEncoding(NSUTF8StringEncoding)!)
-                            postData.appendData(NSString(format: "%@", locale: value as? NSLocale).dataUsingEncoding(NSUTF8StringEncoding)!) //有可能有问题，要测试
+                            postData.appendData(NSString(format: "%@", value as! NSObject).dataUsingEncoding(NSUTF8StringEncoding)!) //有可能有问题，要测试
                             postData.appendData(NSString(string: "\r\n").dataUsingEncoding(NSUTF8StringEncoding)!)
                         }
                         else{
                              postData.appendData(NSString(format: "--%@\r\n", boundary).dataUsingEncoding(NSUTF8StringEncoding)!)
-                            var imgExtension = value.getImageType()
-                            if imgExtension != nil{
+                            if let imgExtension = value.getImageType(){
                                 if useFileName{  // 实际上无法从NSData中获取文件名,所要想要用原始文件名上传,需要把key当作文件名传进来
-                                    postData.appendData(NSString(format: "Content-Disposition: attachment; name=\"%@\"; filename=\"userfile%d%x.%@\"\r\n", key,key,imgExtension!).dataUsingEncoding(NSUTF8StringEncoding)!)
+                                    postData.appendData(NSString(format: "Content-Disposition: attachment; name=\"%@\"; filename=\"userfile%d%x.\(imgExtension)\"\r\n", key,key).dataUsingEncoding(NSUTF8StringEncoding)!)
                                 }
                                 else{
-                                    postData.appendData(NSString(format: "Content-Disposition: attachment; name=\"%@\"; filename=\"userfile%d%x.%@\"\r\n", key,NSDate(timeIntervalSince1970: 0),imgExtension!).dataUsingEncoding(NSUTF8StringEncoding)!)
+                                    postData.appendData(NSString(format: "Content-Disposition: attachment; name=\"\(key)\"; filename=\"userfile%d%x.\(imgExtension)\"\r\n",NSDate(timeIntervalSince1970: 0)).dataUsingEncoding(NSUTF8StringEncoding)!)
                                 }
-                                 postData.appendData(NSString(format: "Content-Type: image/%@\r\n\r\n",imgExtension!).dataUsingEncoding(NSUTF8StringEncoding)!)
+                                 postData.appendData(NSString(format: "Content-Type: image/%@\r\n\r\n",imgExtension).dataUsingEncoding(NSUTF8StringEncoding)!)
                             }
                             else{
                                 if useFileName{
-                                    postData.appendData(NSString(format: "Content-Disposition: attachment; name=\"%@\"; filename=\"userfile%d%x\"\r\n", key,dataIdx, NSDate(timeIntervalSince1970: 0),imgExtension!).dataUsingEncoding(NSUTF8StringEncoding)!)
+                                    postData.appendData(NSString(format: "Content-Disposition: attachment; name=\"%@\"; filename=\"userfile%d%x\"\r\n", key,dataIdx, NSDate(timeIntervalSince1970: 0)).dataUsingEncoding(NSUTF8StringEncoding)!)
                                 }
                                 else{
-                                    postData.appendData(NSString(format: "Content-Disposition: attachment; name=\"%@\"; filename=\"userfile%d%x\"\r\n", key,dataIdx,NSDate(timeIntervalSince1970: 0),imgExtension!).dataUsingEncoding(NSUTF8StringEncoding)!)
+                                    postData.appendData(NSString(format: "Content-Disposition: attachment; name=\"%@\"; filename=\"userfile%d%x\"\r\n", key,dataIdx,NSDate(timeIntervalSince1970: 0)).dataUsingEncoding(NSUTF8StringEncoding)!)
                                 }
                                 postData.appendData(NSString(string: "Content-Type: application/octet-stream\r\n\r\n").dataUsingEncoding(NSUTF8StringEncoding)!)
                             }
@@ -784,41 +784,18 @@ extension Array{
 }
 
 extension NSData{
-    func isJPG()->Bool{
+     func getImageType()->String?{
         if self.length > 4{
             var buffer:UnsafeMutablePointer<Int> = UnsafeMutablePointer<Int>()
-            self.getBytes(buffer, length: 4)
-            return buffer[0] == 0xff && buffer[1] == 0xd8 && buffer[2] == 0xff && buffer[3] == 0xe0;
+            self.getBytes(&buffer, length: 4)
+            println(buffer)
+            switch  (buffer.debugDescription){
+                case "0x0000000000464947": return "gif"
+                case "0x00000000474e5089": return "png"
+                case "0x00000000e0ffd8ff": return "jpg"
+            default: break
+            }
         }
-        return false
-    }
-    func isPNG()->Bool{
-        if self.length > 4{
-            var buffer:UnsafeMutablePointer<Int> = UnsafeMutablePointer<Int>()
-            self.getBytes(buffer, length: 4)
-            return buffer[0] == 0x89 && buffer[1] == 0x50 && buffer[2] == 0x4e && buffer[3] == 0x47;
-        }
-        return false
-    }
-    func isGIF()->Bool{
-        if self.length > 3{
-            var buffer:UnsafeMutablePointer<Int> = UnsafeMutablePointer<Int>()
-            self.getBytes(buffer, length: 4)
-            return buffer[0] == 0x47 && buffer[1] == 0x49 && buffer[2] == 0x46
-        }
-        return false
-    }
-    func getImageType()->String?{
-        var type:String?
-        if self.isJPG(){
-            type = "jpg"
-        }
-        if self.isGIF(){
-            type = "gif"
-        }
-        if self.isPNG(){
-            type = "png"
-        }
-        return type
+        return nil
     }
 }

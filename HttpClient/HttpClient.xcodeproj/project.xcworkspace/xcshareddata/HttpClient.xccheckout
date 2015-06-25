@@ -7,14 +7,14 @@
 	<key>IDESourceControlProjectIdentifier</key>
 	<string>B32F21A6-287F-4635-96DB-1EA447208ED1</string>
 	<key>IDESourceControlProjectName</key>
-	<string>HttpClient</string>
+	<string>project</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
 		<key>F5E36024CC70A727E484D904D3C2EC8A96559317</key>
 		<string>https://github.com/DuckDeck/HttpClient.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>HttpClient/HttpClient.xcodeproj</string>
+	<string>HttpClient/HttpClient.xcodeproj/project.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>F5E36024CC70A727E484D904D3C2EC8A96559317</key>

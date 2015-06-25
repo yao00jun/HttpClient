@@ -13,8 +13,13 @@
 		9D8F90301B379145009DD0A4 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9D8F902E1B379145009DD0A4 /* LaunchScreen.xib */; };
 		9D8F903C1B379145009DD0A4 /* HttpClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D8F903B1B379145009DD0A4 /* HttpClientTests.swift */; };
 		9D8F90461B37915A009DD0A4 /* HttpClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D8F90451B37915A009DD0A4 /* HttpClient.swift */; };
+		A2636AA71B3B9D65004D7F57 /* Setting.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2636AA61B3B9D65004D7F57 /* Setting.swift */; };
+		A2636AA91B3B9D7E004D7F57 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2636AA81B3B9D7E004D7F57 /* Settings.swift */; };
+		A2636AAB1B3BA071004D7F57 /* UploadImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2636AAA1B3BA071004D7F57 /* UploadImageViewController.swift */; };
 		A29A97B61B390FE900138012 /* TxtViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A29A97B51B390FE900138012 /* TxtViewController.swift */; };
 		A29A97B91B393B7C00138012 /* ImgViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A29A97B81B393B7C00138012 /* ImgViewController.swift */; };
+		A2C5C31A1B3BD9CA0000CB7A /* upload3.gif in Resources */ = {isa = PBXBuildFile; fileRef = A2C5C3191B3BD9CA0000CB7A /* upload3.gif */; };
+		A2C5C31C1B3BDD190000CB7A /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A2C5C31B1B3BDD190000CB7A /* AssetsLibrary.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,9 +43,14 @@
 		9D8F903A1B379145009DD0A4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9D8F903B1B379145009DD0A4 /* HttpClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpClientTests.swift; sourceTree = "<group>"; };
 		9D8F90451B37915A009DD0A4 /* HttpClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HttpClient.swift; sourceTree = "<group>"; };
+		A2636AA61B3B9D65004D7F57 /* Setting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Setting.swift; sourceTree = "<group>"; };
+		A2636AA81B3B9D7E004D7F57 /* Settings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
+		A2636AAA1B3BA071004D7F57 /* UploadImageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UploadImageViewController.swift; sourceTree = "<group>"; };
 		A29A97B51B390FE900138012 /* TxtViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TxtViewController.swift; sourceTree = "<group>"; };
 		A29A97B71B39395A00138012 /* HttpClient-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "HttpClient-Bridging-Header.h"; sourceTree = "<group>"; };
 		A29A97B81B393B7C00138012 /* ImgViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImgViewController.swift; sourceTree = "<group>"; };
+		A2C5C3191B3BD9CA0000CB7A /* upload3.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = upload3.gif; sourceTree = "<group>"; };
+		A2C5C31B1B3BDD190000CB7A /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -48,6 +58,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A2C5C31C1B3BDD190000CB7A /* AssetsLibrary.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -64,6 +75,7 @@
 		9D8F90171B379145009DD0A4 = {
 			isa = PBXGroup;
 			children = (
+				A2C5C31B1B3BDD190000CB7A /* AssetsLibrary.framework */,
 				9D8F90221B379145009DD0A4 /* HttpClient */,
 				9D8F90381B379145009DD0A4 /* HttpClientTests */,
 				9D8F90211B379145009DD0A4 /* Products */,
@@ -82,12 +94,16 @@
 		9D8F90221B379145009DD0A4 /* HttpClient */ = {
 			isa = PBXGroup;
 			children = (
+				A2C5C3181B3BD9C30000CB7A /* Image */,
+				A2636AA61B3B9D65004D7F57 /* Setting.swift */,
 				9D8F90271B379145009DD0A4 /* ViewController.swift */,
 				A29A97B51B390FE900138012 /* TxtViewController.swift */,
 				A29A97B81B393B7C00138012 /* ImgViewController.swift */,
+				A2636AAA1B3BA071004D7F57 /* UploadImageViewController.swift */,
 				9D8F90231B379145009DD0A4 /* Supporting Files */,
 				9D8F90451B37915A009DD0A4 /* HttpClient.swift */,
 				A29A97B71B39395A00138012 /* HttpClient-Bridging-Header.h */,
+				A2636AA81B3B9D7E004D7F57 /* Settings.swift */,
 			);
 			path = HttpClient;
 			sourceTree = "<group>";
@@ -118,6 +134,14 @@
 				9D8F903A1B379145009DD0A4 /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		A2C5C3181B3BD9C30000CB7A /* Image */ = {
+			isa = PBXGroup;
+			children = (
+				A2C5C3191B3BD9CA0000CB7A /* upload3.gif */,
+			);
+			path = Image;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -200,6 +224,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A2C5C31A1B3BD9CA0000CB7A /* upload3.gif in Resources */,
 				9D8F90301B379145009DD0A4 /* LaunchScreen.xib in Resources */,
 				9D8F902D1B379145009DD0A4 /* Images.xcassets in Resources */,
 			);
@@ -221,7 +246,10 @@
 			files = (
 				A29A97B91B393B7C00138012 /* ImgViewController.swift in Sources */,
 				9D8F90281B379145009DD0A4 /* ViewController.swift in Sources */,
+				A2636AA71B3B9D65004D7F57 /* Setting.swift in Sources */,
 				A29A97B61B390FE900138012 /* TxtViewController.swift in Sources */,
+				A2636AAB1B3BA071004D7F57 /* UploadImageViewController.swift in Sources */,
+				A2636AA91B3B9D7E004D7F57 /* Settings.swift in Sources */,
 				9D8F90461B37915A009DD0A4 /* HttpClient.swift in Sources */,
 				9D8F90261B379145009DD0A4 /* AppDelegate.swift in Sources */,
 			);
