@@ -11,10 +11,4 @@ Version: 1.0.0   copy right: Gforce,
         HttpClient.setGlobalPassword("123456") //set request authentication password，default is nil (i have't test this feature)
         HttpClient.setGlobalTimeoutInterval(40) // set request time out ,the default value is 20
         HttpClient.setGlobalUserAgent("Firefox") // set User Agent the default if HttpClient
-        window = UIWindow(frame: CGRect(x: 0, y: 0, width: UIScreen.mainScreen().bounds.size.width, height: UIScreen.mainScreen().bounds.size.height))
-        var vc = ViewController()
-        var rootNavigationController = UINavigationController(rootViewController: vc)
-        window?.rootViewController = rootNavigationController
-        window?.makeKeyAndVisible()
-        return true
     }
