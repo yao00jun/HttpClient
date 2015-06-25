@@ -313,37 +313,23 @@ class HttpClient:NSOperation,NSURLConnectionDataDelegate{
         cachePolicy = HttpClient.GlobalCachePolicy
         if requestOptions != nil{
             for (key,value) in requestOptions!{
-                if key == HttpClientOption.SavePath{
-                    operationSavePath = value as? String
-                }
-                if key == HttpClientOption.CachePolicy{
-                    if let policy = value as? NSURLRequestCachePolicy{
-                        cachePolicy = policy
+                switch key{
+                case HttpClientOption.SavePath: operationSavePath = value as? String
+                case HttpClientOption.CachePolicy:  if let policy = value as? NSURLRequestCachePolicy{
+                    cachePolicy = policy
                     }
-                }
-                if key == HttpClientOption.Password {
-                  Password = value as? String
-                }
-                if key == HttpClientOption.SendParametersAsJSON{
-                    sendParametersAsJSON = value as? Bool
-                }
-                if key == HttpClientOption.TimeOut{
-                    if let timeInterval = value as? NSTimeInterval{
-                            timeoutInterval = timeInterval
+                case HttpClientOption.Password:  Password = value as? String
+                case HttpClientOption.SendParametersAsJSON:sendParametersAsJSON = value as? Bool
+                case HttpClientOption.TimeOut:                    if let timeInterval = value as? NSTimeInterval{
+                    timeoutInterval = timeInterval
                     }
-                }
-                if key == HttpClientOption.UserAgent{
-                    userAgent = value as? String
-                }
-                if key == HttpClientOption.UserName{
-                    Username = value as? String
-                }
-                if key == HttpClientOption.UseFileName{
-                    if let isUse = value as? Bool{
-                        useFileName = isUse
+                case HttpClientOption.UserAgent:    userAgent = value as? String
+                case HttpClientOption.UserName:Username = value as? String
+                case HttpClientOption.UseFileName:                    if let isUse = value as? Bool{
+                    useFileName = isUse
                     }
+                default: break
                 }
-                
             }
         }
         super.init()
