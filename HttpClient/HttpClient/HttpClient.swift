@@ -397,7 +397,6 @@ class HttpClient:NSOperation,NSURLConnectionDataDelegate{
                         dispatch_group_notify(saveDataDispatchGroup, saveDataDispatchQueue) { () -> Void in
                              self.callCompletionBlockWithResponse(data, error: nil)
                         }
-                        cancel()
                         return
                     }
                 }
