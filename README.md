@@ -36,3 +36,6 @@ private init(address:String,method:httpMethod,parameters:Dictionary<String,AnyOb
     `headerFields:Dictionary<String,AnyObject>?`,: the paramter is to set the request header.
     `progress:((progress:Float)->())?`: this is the upload&download progress
     `complettion:(response:AnyObject?,urlResponse:NSHTTPURLResponse?,error:NSError?)->())`: this is the completion handler response is a nsdata object, if error occur, the response eill be nil and you can fetch the error info from error
+
+
+### that's weird the grammar do not work......damn it
