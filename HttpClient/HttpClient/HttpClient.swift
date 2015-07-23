@@ -505,9 +505,8 @@ class HttpClient:NSOperation,NSURLConnectionDataDelegate{
             var error:NSError?
             if  self.operationURLResponse!.MIMEType == "application/json"{
                 if self.operationData != nil && self.operationData!.length > 0{
-                    var jsonObject: AnyObject? = NSJSONSerialization.JSONObjectWithData(response, options: NSJSONReadingOptions.AllowFragments, error: &error)
-                    if jsonObject != nil{
-                        response = jsonObject! as! NSData
+                    if let jsonObject: AnyObject = NSJSONSerialization.JSONObjectWithData(response, options: NSJSONReadingOptions.AllowFragments, error: &error) {
+                        response = NSJSONSerialization.dataWithJSONObject(jsonObject, options: NSJSONWritingOptions.PrettyPrinted, error: &error)!
                     }
                 }
             }
