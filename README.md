@@ -45,8 +45,16 @@ HttpClient is a easy-to-use, high efficiency and simplify Http tool.I reference 
   Third:convert the NSData to the Model or Object and use it
 ###Setp4 Other operation 
   Cache the request: pass the number than bigger 0(this is  second unit) to the Cache parameter. and make sure is Get method, the HttpClient will cache this request automatically and store the cache as NSData to the APP's Cache fold.
+    
+    
   Cancel the request: it's very simple. when you want to cancel a request, you must set the cancelToken parameter. can you'd better make the cancelToken is unique. then call the static funtion cancelRequestWithIndentity, pass the cancelToken to this funtion and the HttpClient will cancel this request. as a consequence the result block will not run.meanwhile, if you do not set the cancelToken, you can use the url to cancel the request, call the static funtion cancelRequestsWithPath and pass the url. if you want cancel all the request, call the static funtion cancelAllRequests the HttpClient will terminate all the request that is processing.
+    
+    
   Clear the cache: compare the cancel request, you can clear the cache manually, call the static funtion clearUrlCache(url:String) and pass the url that you have set cache, you can call the static funtion clearCache() as well, it can clear all the cache file that the HttpClient created.
+    
+    
   Set username and password. some website need certificate,it need user provide the username and password.you can use the global static funtion set the global username and password or store the username and password in a dictionary then pass to a specifically request
+    
+    
 #####After read all the ReadMe and you can use it simply and pleasant.  you can also discovery some new features in the code. Thank you
   
