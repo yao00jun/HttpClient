@@ -40,9 +40,23 @@ HttpClient is a easy-to-use, high efficiency and simplify Http tool.I reference 
   ```
 ###Step3 Handle the callback block
   the last thing is to handle the callback block,it's very simple.
+  ```swift
+  HttpClient.get("http://www.baidu.com", parameters: nil, cache: 20, cancelToken: nil, complettion: { (response, urlResponse, error) -> () in
+                if error != nil{
+                    println("there is a error\(error)")
+                    return
+                }
+                if let data = response as? NSData{
+                    if let result = NSString(data: data, encoding: NSUTF8StringEncoding){
+                      println(result)
+                    }
+                }
+            })
+
   First: check the error filed, if error exist, handle the error and display the correct message to the user
   Second: convert the response to the NSData, accord the request result, it can be a Image NSData , Text NSData or JSON.
-  Third:convert the NSData to the Model or Object and use it
+  Third: convert the NSData to the Model or Object and use it
+  ```
 ###Setp4 Other operation 
   Cache the request: pass the number than bigger 0(this is  second unit) to the Cache parameter. and make sure is Get method, the HttpClient will cache this request automatically and store the cache as NSData to the APP's Cache fold.
     
