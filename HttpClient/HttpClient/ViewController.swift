@@ -58,7 +58,7 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
         var str = arrStrs[indexPath.row]
         switch (str){
         case "get":
-            HttpClient.get("http://www.baidu.com", parameters: nil, cache: 20, cancelToken: nil, complettion: { (response, urlResponse, error) -> () in
+            HttpClient.get("http://www.baidu.com", parameters: nil, cache: 20, cancelToken: nil, completion: { (response, urlResponse, error) -> () in
                 if error != nil{
                     println("there is a error\(error)")
                     return
@@ -78,7 +78,7 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
                 var para = ["a":"123"]
             HttpClient.get("http://img1.gamersky.com/image2015/05/20150523ge_4/gamersky_10origin_19_20155231446302.jpg", parameters: para, cache: 100, cancelToken: "img", requestOptions: httpOption, headerFields: nil, progress: { (progress) -> () in
                 println(progress)
-            }, complettion: { (response, urlResponse, error) -> () in
+            }, completion: { (response, urlResponse, error) -> () in
                 if error != nil{
                     println("there is a error\(error)")
                     return
@@ -99,7 +99,7 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
                 }
                 var dict = ["Action":"MoreLogin","UserName":"qfqtsg","Password":"111111","TermOfValidity":"2160","Captcha":"0","Version":NSNumber(int: 1)]
                 var http = "http://api.qingfanqie.com/Login/More/MoreLogin?d=29e8fbfe%20f74174c6%204a035611%20cef2dd18%20d36cd32c%209b498f75%2059d046ad%206d17f18c&i=233&w=113.9880958656844&j=22.55701148847385&v=2.0.0&t=1"
-            HttpClient.Post(http, parameters: dict, cancelToken: "login", complettion: { (response, urlResponse, error) -> () in
+            HttpClient.Post(http, parameters: dict, cancelToken: "login", completion: { (response, urlResponse, error) -> () in
                 if error != nil{
                     println("there is a error\(error)")
                     return
