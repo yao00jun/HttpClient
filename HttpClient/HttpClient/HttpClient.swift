@@ -177,7 +177,7 @@ class HttpClient:NSOperation,NSURLConnectionDataDelegate{
 
     
     static func cancelRequestsWithPath(path:String){
-        for queue in HttpClient.sharedQuene.operations{
+        for queue in HttpClient.operationQueue.operations{
             if let httpClient = queue as? HttpClient{
                 if let  requestPath = httpClient.requestPath
                 {
@@ -190,11 +190,11 @@ class HttpClient:NSOperation,NSURLConnectionDataDelegate{
     }
     
     static func cancelAllRequests(){
-        HttpClient.sharedQuene.cancelAllOperations()
+        HttpClient.operationQueue.cancelAllOperations()
     }
     
     static func cancelRequestWithIndentity(cancelToken:String){
-        for queue in HttpClient.sharedQuene.operations{
+        for queue in HttpClient.operationQueue.operations{
             if let httpClient = queue as? HttpClient{
                 if let  token = httpClient.cancelToken
                 {
@@ -435,6 +435,9 @@ class HttpClient:NSOperation,NSURLConnectionDataDelegate{
     }
     //完成
    private func finish(){
+        if isFinished{
+            return
+        }
         operationConnection?.cancel()
         operationConnection = nil
         decreaseTaskCount()
