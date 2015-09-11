@@ -56,7 +56,7 @@ class HttpClient:NSOperation,NSURLConnectionDataDelegate{
     private static let sharedQuene:NSOperationQueue = NSOperationQueue()
     private class var operationQueue:NSOperationQueue{
         get{
-            return HttpClient.sharedQuene
+            return sharedQuene
         }
     }
     private static var cacheKeyDict:Dictionary<String,NSDate> = Dictionary<String,NSDate>()
