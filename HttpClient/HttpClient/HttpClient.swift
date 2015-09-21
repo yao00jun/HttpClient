@@ -62,14 +62,14 @@ class HttpClient:NSOperation,NSURLConnectionDataDelegate{
     private static var cacheKeyDict:Dictionary<String,NSDate> = Dictionary<String,NSDate>()
     private class var sharedCacheKeyDict:Dictionary<String,NSDate>{
         set{
-            println("before set")
+            print("before set")
             for (key,value) in HttpClient.cacheKeyDict{
-                println("key:\(key) and value:\(value)")
+                print("key:\(key) and value:\(value)")
             }
             HttpClient.cacheKeyDict = newValue
-            println("after set")
+            print("after set")
             for (key,value) in HttpClient.cacheKeyDict{
-                println("key:\(key) and value:\(value)")
+                print("key:\(key) and value:\(value)")
             }
         }
         get{
@@ -89,12 +89,12 @@ class HttpClient:NSOperation,NSURLConnectionDataDelegate{
     private var cancelToken:String?
     private var isCacheInValid:Bool{
         get{
-            if let key = operationRequest!.URL?.absoluteString?.stringByReplacingPercentEscapesUsingEncoding(NSUTF8StringEncoding)
+            if let key = operationRequest!.URL?.absoluteString.stringByRemovingPercentEncoding
             {
                 if let expireDate = HttpClient.sharedCacheKeyDict[key]
                 {
                     if NSDate().compare(expireDate) == NSComparisonResult.OrderedDescending{
-                        println("key:\(key)的缓存已经失效")
+                        print("key:\(key)的缓存已经失效")
                         return true
                     }
                     else
@@ -208,75 +208,81 @@ class HttpClient:NSOperation,NSURLConnectionDataDelegate{
     
     static func clearUrlCache(url:String){
         HttpClient.sharedCacheKeyDict.removeValueForKey(url)
-        var path = HttpClient.getCacheFileName(url)
-        NSFileManager.defaultManager().removeItemAtPath(path, error: nil)
+        let path = HttpClient.getCacheFileName(url)
+        do {
+            try NSFileManager.defaultManager().removeItemAtPath(path)
+        } catch _ {
+        }
     }
     
     static func clearCache(){
         HttpClient.sharedCacheKeyDict.removeAll(keepCapacity: false)
         var cachePath: AnyObject? = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.CachesDirectory, NSSearchPathDomainMask.UserDomainMask, true).first
         cachePath = (cachePath as! NSString).stringByAppendingPathComponent("HttpClientCaches") as String
-        NSFileManager.defaultManager().removeItemAtPath(cachePath as! String, error: nil)
+        do {
+            try NSFileManager.defaultManager().removeItemAtPath(cachePath as! String)
+        } catch _ {
+        }
     }
     
     static func get(address:String,parameters:Dictionary<String,AnyObject>?,cache:Int,cancelToken:String?, queryPara:Dictionary<String,AnyObject>?, completion:(response:AnyObject?,urlResponse:NSHTTPURLResponse?,error:NSError?)->()) ->HttpClient{
-        var httpClient = HttpClient(address: address, method: httpMethod.Get, parameters: parameters, cache: cache, cancelToken: cancelToken, queryPara:queryPara, requestOptions:nil,headerFields:nil, progress: nil, completion: completion)
+        let httpClient = HttpClient(address: address, method: httpMethod.Get, parameters: parameters, cache: cache, cancelToken: cancelToken, queryPara:queryPara, requestOptions:nil,headerFields:nil, progress: nil, completion: completion)
         httpClient.requestPath = httpClient.operationRequest?.URL?.absoluteString
         self.operationQueue.addOperation(httpClient)
         return httpClient
     }
     
     static func get(address:String,parameters:Dictionary<String,AnyObject>?,cache:Int,cancelToken:String?,completion:(response:AnyObject?,urlResponse:NSHTTPURLResponse?,error:NSError?)->()) ->HttpClient{
-        var httpClient = HttpClient(address: address, method: httpMethod.Get, parameters: parameters, cache: cache, cancelToken: cancelToken, queryPara:nil, requestOptions:nil,headerFields:nil, progress: nil, completion: completion)
+        let httpClient = HttpClient(address: address, method: httpMethod.Get, parameters: parameters, cache: cache, cancelToken: cancelToken, queryPara:nil, requestOptions:nil,headerFields:nil, progress: nil, completion: completion)
         httpClient.requestPath = httpClient.operationRequest?.URL?.absoluteString
         self.operationQueue.addOperation(httpClient)
         return httpClient
     }
     
     static func get(address:String,parameters:Dictionary<String,AnyObject>?, cache:Int,cancelToken:String?, requestOptions:Dictionary<String,AnyObject>?,headerFields:Dictionary<String,AnyObject>?, progress:((progress:Float)->())?,completion:(response:AnyObject?,urlResponse:NSHTTPURLResponse?,error:NSError?)->()) ->HttpClient {
-        var httpClient = HttpClient(address: address, method: httpMethod.Get, parameters: parameters, cache: cache, cancelToken: cancelToken, queryPara:nil, requestOptions:requestOptions,headerFields:headerFields, progress: progress, completion: completion)
+        let httpClient = HttpClient(address: address, method: httpMethod.Get, parameters: parameters, cache: cache, cancelToken: cancelToken, queryPara:nil, requestOptions:requestOptions,headerFields:headerFields, progress: progress, completion: completion)
         httpClient.requestPath = httpClient.operationRequest?.URL?.absoluteString
         self.operationQueue.addOperation(httpClient)
         return httpClient
     }
     
     static func Post(address:String,parameters:Dictionary<String,AnyObject>?,cancelToken:String?, completion:(response:AnyObject?,urlResponse:NSHTTPURLResponse?,error:NSError?)->()) ->HttpClient{
-        var httpClient = HttpClient(address: address, method: httpMethod.Post, parameters: parameters, cache: 0, cancelToken: cancelToken, queryPara:nil, requestOptions:nil,headerFields:nil, progress: nil, completion: completion)
+        let httpClient = HttpClient(address: address, method: httpMethod.Post, parameters: parameters, cache: 0, cancelToken: cancelToken, queryPara:nil, requestOptions:nil,headerFields:nil, progress: nil, completion: completion)
         httpClient.requestPath = httpClient.operationRequest?.URL?.absoluteString
         self.operationQueue.addOperation(httpClient)
         return httpClient
     }
     
     static func Post(address:String,parameters:Dictionary<String,AnyObject>?,cancelToken:String?,queryPara:Dictionary<String,AnyObject>?,completion:(response:AnyObject?,urlResponse:NSHTTPURLResponse?,error:NSError?)->()) -> HttpClient{
-        var httpClient = HttpClient(address: address, method: httpMethod.Post, parameters: parameters, cache: 0,  cancelToken: cancelToken, queryPara:nil, requestOptions:nil,headerFields:nil, progress: nil, completion: completion)
+        let httpClient = HttpClient(address: address, method: httpMethod.Post, parameters: parameters, cache: 0,  cancelToken: cancelToken, queryPara:nil, requestOptions:nil,headerFields:nil, progress: nil, completion: completion)
         httpClient.requestPath = httpClient.operationRequest?.URL?.absoluteString
         self.operationQueue.addOperation(httpClient)
         return httpClient
     }
     
     static func Post(address:String,parameters:Dictionary<String,AnyObject>?,cancelToken:String?,queryPara:Dictionary<String,AnyObject>?, requestOptions:Dictionary<String,AnyObject>?,headerFields:Dictionary<String,AnyObject>?, progress:((progress:Float)->())?,completion:(response:AnyObject?,urlResponse:NSHTTPURLResponse?,error:NSError?)->()) -> HttpClient{
-        var httpClient = HttpClient(address: address, method: httpMethod.Post, parameters: parameters, cache: 0, cancelToken: cancelToken, queryPara:queryPara, requestOptions:requestOptions,headerFields:headerFields, progress: progress, completion: completion)
+        let httpClient = HttpClient(address: address, method: httpMethod.Post, parameters: parameters, cache: 0, cancelToken: cancelToken, queryPara:queryPara, requestOptions:requestOptions,headerFields:headerFields, progress: progress, completion: completion)
         httpClient.requestPath = httpClient.operationRequest?.URL?.absoluteString
         self.operationQueue.addOperation(httpClient)
         return httpClient
     }
     
     static func Delete(address:String,parameters:Dictionary<String,AnyObject>?,cancelToken:String?,completion:(response:AnyObject?,urlResponse:NSHTTPURLResponse?,error:NSError?)->()) -> HttpClient{
-        var httpClient = HttpClient(address: address, method: httpMethod.Delete, parameters: parameters, cache: 0,cancelToken: cancelToken, queryPara:nil, requestOptions:nil,headerFields:nil, progress: nil, completion: completion)
+        let httpClient = HttpClient(address: address, method: httpMethod.Delete, parameters: parameters, cache: 0,cancelToken: cancelToken, queryPara:nil, requestOptions:nil,headerFields:nil, progress: nil, completion: completion)
         httpClient.requestPath = httpClient.operationRequest?.URL?.absoluteString
         self.operationQueue.addOperation(httpClient)
         return httpClient
     }
 
     static func Put(address:String,parameters:Dictionary<String,AnyObject>?,cancelToken:String?, requestOptions:Dictionary<String,AnyObject>?,headerFields:Dictionary<String,AnyObject>?, progress:((progress:Float)->())?,completion:(response:AnyObject?,urlResponse:NSHTTPURLResponse?,error:NSError?)->()) -> HttpClient{
-        var httpClient = HttpClient(address: address, method: httpMethod.Put, parameters: parameters, cache: 0, cancelToken: cancelToken, queryPara:nil, requestOptions:requestOptions,headerFields:headerFields, progress: progress, completion: completion)
+        let httpClient = HttpClient(address: address, method: httpMethod.Put, parameters: parameters, cache: 0, cancelToken: cancelToken, queryPara:nil, requestOptions:requestOptions,headerFields:headerFields, progress: progress, completion: completion)
         httpClient.requestPath = httpClient.operationRequest?.URL?.absoluteString
         self.operationQueue.addOperation(httpClient)
         return httpClient
     }
 
     static func Head(address:String,parameters:Dictionary<String,AnyObject>?,cancelToken:String?, requestOptions:Dictionary<String,AnyObject>?,headerFields:Dictionary<String,AnyObject>?, progress:((progress:Float)->())?,completion:(response:AnyObject?,urlResponse:NSHTTPURLResponse?,error:NSError?)->()) -> HttpClient{
-        var httpClient = HttpClient(address: address, method: httpMethod.Head, parameters: parameters, cache: 0, cancelToken: cancelToken, queryPara:nil, requestOptions:requestOptions,headerFields:headerFields, progress: progress, completion: completion)
+        let httpClient = HttpClient(address: address, method: httpMethod.Head, parameters: parameters, cache: 0, cancelToken: cancelToken, queryPara:nil, requestOptions:requestOptions,headerFields:headerFields, progress: progress, completion: completion)
         httpClient.requestPath = httpClient.operationRequest?.URL?.absoluteString
         self.operationQueue.addOperation(httpClient)
         return httpClient
@@ -313,7 +319,6 @@ class HttpClient:NSOperation,NSURLConnectionDataDelegate{
             case .Put: operationRequest?.HTTPMethod = "PUT"
             case .Delete: operationRequest?.HTTPMethod = "DELETE"
             case .Head: operationRequest?.HTTPMethod = "HEAD"
-            default:operationRequest?.HTTPMethod = "GET"
         }
         Username = HttpClient.GlobalUserName
         Password = HttpClient.GlobalPassword
@@ -381,7 +386,7 @@ class HttpClient:NSOperation,NSURLConnectionDataDelegate{
             }
             else{
                 assert(false, "error path")
-                var exception = NSException(name: "Invalid path", reason: "you provide a invalid path", userInfo: [NSInvalidArgumentException:operationSavePath!])
+                let exception = NSException(name: "Invalid path", reason: "you provide a invalid path", userInfo: [NSInvalidArgumentException:operationSavePath!])
                exception.raise()
             }
         }
@@ -398,7 +403,7 @@ class HttpClient:NSOperation,NSURLConnectionDataDelegate{
                 
             }
             else{ //没有失效,就不再请求,直接从Document获取数据返回
-                var filePath = getCacheFileName()
+                let filePath = getCacheFileName()
                 if NSFileManager.defaultManager().fileExistsAtPath(filePath){
                     if let  data = NSData(contentsOfFile: filePath){
                         dispatch_group_notify(saveDataDispatchGroup, saveDataDispatchQueue) { () -> Void in
@@ -410,9 +415,9 @@ class HttpClient:NSOperation,NSURLConnectionDataDelegate{
             }
         }
         operationConnection = NSURLConnection(request: operationRequest!, delegate: self, startImmediately: false)
-        var currentQueue = NSOperationQueue.currentQueue()
-        var inBackgroundAndInOperationQueue = currentQueue != nil && currentQueue != NSOperationQueue.mainQueue()
-        var targetRunLoop = inBackgroundAndInOperationQueue ? NSRunLoop.currentRunLoop() : NSRunLoop.mainRunLoop()
+        let currentQueue = NSOperationQueue.currentQueue()
+        let inBackgroundAndInOperationQueue = currentQueue != nil && currentQueue != NSOperationQueue.mainQueue()
+        let targetRunLoop = inBackgroundAndInOperationQueue ? NSRunLoop.currentRunLoop() : NSRunLoop.mainRunLoop()
         if operationSavePath != nil{
             operationConnection?.scheduleInRunLoop(targetRunLoop, forMode: NSRunLoopCommonModes)
         }
@@ -426,7 +431,7 @@ class HttpClient:NSOperation,NSURLConnectionDataDelegate{
         }
         if cachePolicy == NSURLRequestCachePolicy.ReturnCacheDataDontLoad
         {
-            println("Network fail use Cache")
+            print("Network fail use Cache")
         }
         if inBackgroundAndInOperationQueue{
             operationRunLoop = CFRunLoopGetCurrent()
@@ -462,8 +467,8 @@ class HttpClient:NSOperation,NSURLConnectionDataDelegate{
     }
    @objc private func requestTimeout(){
         if let failingUrl = operationRequest?.URL{
-            var userInfo = [NSLocalizedDescriptionKey:"The operation timed out.",NSURLErrorFailingURLErrorKey:failingUrl,NSURLErrorFailingURLStringErrorKey:failingUrl.absoluteString!]
-            var timeoutError:NSError? = NSError(domain: NSURLErrorDomain, code: NSURLErrorTimedOut, userInfo: userInfo)
+            let userInfo = [NSLocalizedDescriptionKey:"The operation timed out.",NSURLErrorFailingURLErrorKey:failingUrl,NSURLErrorFailingURLStringErrorKey:failingUrl.absoluteString]
+            let timeoutError:NSError? = NSError(domain: NSURLErrorDomain, code: NSURLErrorTimedOut, userInfo: userInfo)
             connection(nil, error: timeoutError)
         }
     }
@@ -483,9 +488,9 @@ class HttpClient:NSOperation,NSURLConnectionDataDelegate{
                 //catch error
                 else{
                    self.operationConnection?.cancel()
-                    var info:Dictionary<String,AnyObject> = [NSFilePathErrorKey:self.operationSavePath!]
-                    var writeError = NSError(domain: "HttpClientRequestWriteError", code: 0, userInfo: info)
-                    var exception = NSException(name: "write data file", reason: "You provide a invalid path the you can not write data in the path", userInfo: [NSInvalidArgumentException:writeError])
+                    let info:Dictionary<String,AnyObject> = [NSFilePathErrorKey:self.operationSavePath!]
+                    let writeError = NSError(domain: "HttpClientRequestWriteError", code: 0, userInfo: info)
+                    let exception = NSException(name: "write data file", reason: "You provide a invalid path the you can not write data in the path", userInfo: [NSInvalidArgumentException:writeError])
                     exception.raise()
                 }
             }
@@ -515,16 +520,21 @@ class HttpClient:NSOperation,NSURLConnectionDataDelegate{
             var error:NSError?
             if  self.operationURLResponse!.MIMEType == "application/json"{
                 if self.operationData != nil && self.operationData!.length > 0{
-                    if let jsonObject: AnyObject = NSJSONSerialization.JSONObjectWithData(response, options: NSJSONReadingOptions.AllowFragments, error: &error) {
-                        response = NSJSONSerialization.dataWithJSONObject(jsonObject, options: NSJSONWritingOptions.PrettyPrinted, error: &error)!
+                    do {
+                        let jsonObject: AnyObject = try NSJSONSerialization.JSONObjectWithData(response, options: NSJSONReadingOptions.AllowFragments)
+                        response = try! NSJSONSerialization.dataWithJSONObject(jsonObject, options: NSJSONWritingOptions.PrettyPrinted)
+                    } catch let error1 as NSError {
+                        error = error1
+                    } catch {
+                        fatalError()
                     }
                 }
             }
             if  self.cacheTime > 0{
                 if self.isCacheInValid{
-                    if let key = self.operationRequest?.URL?.absoluteString?.stringByReplacingPercentEscapesUsingEncoding(NSUTF8StringEncoding){
+                    if let key = self.operationRequest?.URL?.absoluteString.stringByRemovingPercentEncoding{
                         HttpClient.sharedCacheKeyDict[key] = NSDate(timeIntervalSinceNow: NSTimeInterval(self.cacheTime))
-                        var filePath = self.getCacheFileName()
+                        let filePath = self.getCacheFileName()
                         //NSFileManager.defaultManager().crea
                         NSFileManager.defaultManager().createFileAtPath(filePath, contents: response, attributes: nil)
                     }
@@ -548,7 +558,7 @@ class HttpClient:NSOperation,NSURLConnectionDataDelegate{
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
             var serverError:NSError? = error
             if  serverError != nil && self.operationURLResponse?.statusCode == 500{
-            var info = [NSLocalizedDescriptionKey:"Bad Server Response.",NSURLErrorFailingURLErrorKey:self.operationRequest!.URL!,NSURLErrorFailingURLStringErrorKey:self.operationRequest!.URL!.absoluteString!]
+            let info = [NSLocalizedDescriptionKey:"Bad Server Response.",NSURLErrorFailingURLErrorKey:self.operationRequest!.URL!,NSURLErrorFailingURLStringErrorKey:self.operationRequest!.URL!.absoluteString]
                 serverError = NSError(domain: NSURLErrorDomain, code: NSURLErrorBadServerResponse, userInfo:info)
                 
             }
@@ -584,11 +594,11 @@ class HttpClient:NSOperation,NSURLConnectionDataDelegate{
     }
     
   private  func addParametersToRequest(parameters:Dictionary<String,AnyObject>){
-        var method = operationRequest!.HTTPMethod
+        let method = operationRequest!.HTTPMethod
         if method == "POST" || method == "PUT"{
             if queryParameters != nil
             {
-                var baseAddress = operationRequest!.URL!.absoluteString!
+                var baseAddress = operationRequest!.URL!.absoluteString
                 if queryParameters!.count > 0{
                     baseAddress = baseAddress + "?\(parameterStringForDictionary(queryParameters!))"
                     operationRequest!.URL = NSURL(string: baseAddress)
@@ -597,10 +607,16 @@ class HttpClient:NSOperation,NSURLConnectionDataDelegate{
             if sendParametersAsJSON!{
                 operationRequest?.setValue("application/json", forHTTPHeaderField: "Content-Type")
                 var Error:NSError?
-                var jsonData = NSJSONSerialization.dataWithJSONObject(parameters, options: NSJSONWritingOptions.allZeros, error: &Error)
+                var jsonData: NSData?
+                do {
+                    jsonData = try NSJSONSerialization.dataWithJSONObject(parameters, options: NSJSONWritingOptions())
+                } catch let error as NSError {
+                    Error = error
+                    jsonData = nil
+                }
                 if Error != nil{
                     assert(false, "you use sendParametersAsJSON but the parameter contain invalid data")
-                    var exception = NSException(name: "InValidPara", reason: "POST and PUT parameters must be provided as NSDictionary or NSArray when sendParametersAsJSON is set to YES.", userInfo: [NSInvalidArgumentException:"POST and PUT parameters must be provided as NSDictionary or NSArray when sendParametersAsJSON is set to YES."])
+                    let exception = NSException(name: "InValidPara", reason: "POST and PUT parameters must be provided as NSDictionary or NSArray when sendParametersAsJSON is set to YES.", userInfo: [NSInvalidArgumentException:"POST and PUT parameters must be provided as NSDictionary or NSArray when sendParametersAsJSON is set to YES."])
                     exception.raise()
                 }
                 operationRequest?.HTTPBody = jsonData
@@ -608,27 +624,27 @@ class HttpClient:NSOperation,NSURLConnectionDataDelegate{
             else
             {
                 var hasData = false
-                for (key,value) in parameters{
+                for (_,value) in parameters{
                     if value is NSData{
                         hasData = true
                     }
                     else if !(value is String) && !(value is NSString) && !(value is NSNumber){
                         assert(false, "\(operationRequest!.HTTPMethod)requests only accept NSString and NSNumber parameters.")
-                        var exception = NSException(name: "InValidPara", reason: "\(operationRequest!.HTTPMethod)requests only accept NSString and NSNumber parameters.", userInfo: [NSInvalidArgumentException:"\(operationRequest!.HTTPMethod)requests only accept NSString and NSNumber parameters."])
+                        let exception = NSException(name: "InValidPara", reason: "\(operationRequest!.HTTPMethod)requests only accept NSString and NSNumber parameters.", userInfo: [NSInvalidArgumentException:"\(operationRequest!.HTTPMethod)requests only accept NSString and NSNumber parameters."])
                         exception.raise()
                     }
                 }
                 if !hasData{
-                    var stringData = (parameterStringForDictionary(parameters) as NSString).UTF8String
-                    var postData = NSMutableData(bytes: stringData, length: Int(strlen(stringData)))
+                    let stringData = (parameterStringForDictionary(parameters) as NSString).UTF8String
+                    let postData = NSMutableData(bytes: stringData, length: Int(strlen(stringData)))
                    operationRequest?.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
                     operationRequest?.HTTPBody = postData
                 }
                 else{
-                    var boundary = "HttpClientRequestBoundary"
-                    var contentType = "multipart/form-data; boundary=\(boundary)"
+                    let boundary = "HttpClientRequestBoundary"
+                    let contentType = "multipart/form-data; boundary=\(boundary)"
                     operationRequest?.setValue(contentType, forHTTPHeaderField: "Content-Type")
-                    var postData = NSMutableData()
+                    let postData = NSMutableData()
                     var dataIdx = 0
                     for (key,value) in parameters{
                         if !(value is NSData){
@@ -669,10 +685,10 @@ class HttpClient:NSOperation,NSURLConnectionDataDelegate{
             }
         }
         else {
-            var baseAddress = operationRequest!.URL!.absoluteString!
-            var range =  (baseAddress as NSString).rangeOfString("?")
-            var containPara = range.length > 0
-            var sign = containPara ? "&" : "?"
+            var baseAddress = operationRequest!.URL!.absoluteString
+            let range =  (baseAddress as NSString).rangeOfString("?")
+            let containPara = range.length > 0
+            let sign = containPara ? "&" : "?"
             if operationParameters != nil {
                 if operationParameters!.count > 0{
                     var paras = operationParameters!
@@ -690,9 +706,9 @@ class HttpClient:NSOperation,NSURLConnectionDataDelegate{
     
     private func signRequestWithUsername(){
         if Username != nil && Password != nil{
-            var authStr = NSString(format: "%@:%@", Username!,Password!)
-            var authData = authStr.dataUsingEncoding(NSASCIIStringEncoding)
-            var authValue = NSString(format: "Basic %@",authData!.base64EncodedDataWithOptions(NSDataBase64EncodingOptions.EncodingEndLineWithLineFeed))
+            let authStr = NSString(format: "%@:%@", Username!,Password!)
+            let authData = authStr.dataUsingEncoding(NSASCIIStringEncoding)
+            let authValue = NSString(format: "Basic %@",authData!.base64EncodedDataWithOptions(NSDataBase64EncodingOptions.EncodingEndLineWithLineFeed))
             operationRequest?.setValue(authValue as String, forHTTPHeaderField: "Authorization")
         }
     }
@@ -710,11 +726,14 @@ class HttpClient:NSOperation,NSURLConnectionDataDelegate{
     private func getCacheFileName()->String{
         var cachePath: AnyObject? = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.CachesDirectory, NSSearchPathDomainMask.UserDomainMask, true).first
         cachePath = (cachePath as! NSString).stringByAppendingPathComponent("HttpClientCaches") as String
-        var url = operationRequest!.URL!.absoluteString!.stringByReplacingPercentEscapesUsingEncoding(NSUTF8StringEncoding)!
+        let url = operationRequest!.URL!.absoluteString.stringByRemovingPercentEncoding!
         if !NSFileManager.defaultManager().fileExistsAtPath(cachePath as! String) {
-            NSFileManager.defaultManager().createDirectoryAtPath(cachePath as! String , withIntermediateDirectories: true, attributes: nil, error: nil)
+            do {
+                try NSFileManager.defaultManager().createDirectoryAtPath(cachePath as! String , withIntermediateDirectories: true, attributes: nil)
+            } catch _ {
+            }
         }
-        var path = (cachePath as! NSString).stringByAppendingPathComponent(HttpClient.convertUrlToFilename(url))
+        let path = (cachePath as! NSString).stringByAppendingPathComponent(HttpClient.convertUrlToFilename(url))
         return path as String
     }
     
@@ -722,9 +741,12 @@ class HttpClient:NSOperation,NSURLConnectionDataDelegate{
         var cachePath: AnyObject? = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.CachesDirectory, NSSearchPathDomainMask.UserDomainMask, true).first
         cachePath = (cachePath as! NSString).stringByAppendingPathComponent("HttpClientCaches") as String
         if !NSFileManager.defaultManager().fileExistsAtPath(cachePath as! String) {
-            NSFileManager.defaultManager().createDirectoryAtPath(cachePath as! String , withIntermediateDirectories: true, attributes: nil, error: nil)
+            do {
+                try NSFileManager.defaultManager().createDirectoryAtPath(cachePath as! String , withIntermediateDirectories: true, attributes: nil)
+            } catch _ {
+            }
         }
-        var path = (cachePath as! NSString).stringByAppendingPathComponent(convertUrlToFilename(url))
+        let path = (cachePath as! NSString).stringByAppendingPathComponent(convertUrlToFilename(url))
         return path as String
 
     }
@@ -748,7 +770,7 @@ class HttpClient:NSOperation,NSURLConnectionDataDelegate{
             }
             else{
                 assert(false, "GET and DELETE parameters must be provided as NSDictionary")
-                var exception = NSException(name: "InValidPara", reason: "GET and DELETE parameters must be provided as NSDictionary.", userInfo: [NSInvalidArgumentException:"GET and DELETE parameters must be provided as NSDictionary"])
+                let exception = NSException(name: "InValidPara", reason: "GET and DELETE parameters must be provided as NSDictionary.", userInfo: [NSInvalidArgumentException:"GET and DELETE parameters must be provided as NSDictionary"])
                 exception.raise()
 
             }
@@ -759,7 +781,7 @@ class HttpClient:NSOperation,NSURLConnectionDataDelegate{
 
 extension String{
     func encodedURLParameterString()->String{
-        var result  = CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault, self as CFStringRef, nil, __CFStringMakeConstantString(":/=,!$&'()*+;[]@#?^%\"`<>{}\\|~ "), CFStringBuiltInEncodings.UTF8.rawValue)
+        let result  = CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault, self as CFStringRef, nil, __CFStringMakeConstantString(":/=,!$&'()*+;[]@#?^%\"`<>{}\\|~ "), CFStringBuiltInEncodings.UTF8.rawValue)
         return result as String
     }
 
@@ -791,7 +813,7 @@ extension NSData{
         if self.length > 4{
             var buffer:UnsafeMutablePointer<Int> = UnsafeMutablePointer<Int>()
             self.getBytes(&buffer, length: 4)
-            println(buffer)
+            print(buffer)
             switch  (buffer.debugDescription){
                 case "0x0000000000464947": return "gif"
                 case "0x00000000474e5089": return "png"

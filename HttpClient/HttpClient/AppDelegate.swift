@@ -22,8 +22,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         HttpClient.setGlobalTimeoutInterval(40) // set request time out ,the default value is 20
         HttpClient.setGlobalUserAgent("Firefox") // set User Agent the default if HttpClient
         window = UIWindow(frame: CGRect(x: 0, y: 0, width: UIScreen.mainScreen().bounds.size.width, height: UIScreen.mainScreen().bounds.size.height))
-        var vc = ViewController()
-        var rootNavigationController = UINavigationController(rootViewController: vc)
+        let vc = ViewController()
+        let rootNavigationController = UINavigationController(rootViewController: vc)
         window?.rootViewController = rootNavigationController
         window?.makeKeyAndVisible()
         return true

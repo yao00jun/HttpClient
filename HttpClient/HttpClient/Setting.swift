@@ -69,9 +69,7 @@ class Setting<T>
     
     private func getStoreLevel()->Int
     {
-        var type = reflect(self.defaultValue!);
-        println(type.value)
-        println(type.valueType)
+        _ = Mirror(reflecting: self.defaultValue!);
         if self.defaultValue! is Int || self.defaultValue! is String || self.defaultValue! is NSDate || self.defaultValue! is Bool || self.defaultValue! is Float
         {
            return 0

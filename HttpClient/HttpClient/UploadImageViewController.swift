@@ -42,8 +42,8 @@ class UploadImageViewController: UIViewController {
         view.addSubview(progressUploadImage)
         view.backgroundColor = UIColor.whiteColor()
         navigationItem.title = "上传图片"
-        var btnUpload = UIBarButtonItem(title: "上传", style: UIBarButtonItemStyle.Plain, target: self, action: "upload")
-        var btnCancel = UIBarButtonItem(title: "取消", style: UIBarButtonItemStyle.Plain, target: self, action: "cancel")
+        let btnUpload = UIBarButtonItem(title: "上传", style: UIBarButtonItemStyle.Plain, target: self, action: "upload")
+        let btnCancel = UIBarButtonItem(title: "取消", style: UIBarButtonItemStyle.Plain, target: self, action: "cancel")
         navigationItem.rightBarButtonItems = [btnCancel,btnUpload]
         segImageType.frame = CGRect(x: 0, y: 120, width: UIScreen.mainScreen().bounds.width, height: 30)
         segImageType.selectedSegmentIndex = 0
@@ -57,26 +57,26 @@ class UploadImageViewController: UIViewController {
             imgData = UIImageJPEGRepresentation(imgUpload.image!, 0.3)
         }
         else if segImageType.selectedSegmentIndex == 1{
-            imgData = UIImagePNGRepresentation(imgUpload.image)
+            imgData = UIImagePNGRepresentation(imgUpload.image!)
         }
         else{
              //暂时无法将gif图片转成gif的nsdata
         }
-        var dict = ["ImageTitle":"我的好东西","Label":"我的麒麟臂把持不住了","test1":NSNumber(double: 1.1),"test2":NSNumber(int: 11),"test3":NSNumber(bool: true),"image0":imgData!]
+        let dict = ["ImageTitle":"我的好东西","Label":"我的麒麟臂把持不住了","test1":NSNumber(double: 1.1),"test2":NSNumber(int: 11),"test3":NSNumber(bool: true),"image0":imgData!]
        // var dict = ["image0":imgData!]
-        var option = [HttpClientOption.TimeOut:NSNumber(int: 15)]
-        var url = "http://api.qingfanqie.com/InLibraryConsole/Showcase/UploadWindow/\(Settings.mangeId.Value)/\(Settings.key.Value)/\(Settings.libraryId.Value)"
+        let option = [HttpClientOption.TimeOut:NSNumber(int: 15)]
+        let url = "http://api.qingfanqie.com/InLibraryConsole/Showcase/UploadWindow/\(Settings.mangeId.Value)/\(Settings.key.Value)/\(Settings.libraryId.Value)"
         HttpClient.Post(url, parameters: dict, cancelToken: "img", queryPara: nil, requestOptions: option, headerFields: nil, progress: { (progress) -> () in
-            println(progress)
+            print(progress)
             self.progressUploadImage.progress = Float(progress)
         }) { (response, urlResponse, error) -> () in
             if error != nil{
-                println("there is a error\(error)")
+                print("there is a error\(error)")
                 return
             }
             if let data = response as? NSData{
                 if let result = NSString(data: data, encoding: NSUTF8StringEncoding){
-                    println(result)
+                    print(result)
                 }
             }
 
@@ -88,7 +88,7 @@ class UploadImageViewController: UIViewController {
     }
     
     func segChoose(sender:UISegmentedControl){
-        var index = sender.selectedSegmentIndex
+        let index = sender.selectedSegmentIndex
         switch index{
             case 0:         imgUpload.image = UIImage(named: "upload4")
                     case 1:         imgUpload.image = UIImage(named: "upload2")
