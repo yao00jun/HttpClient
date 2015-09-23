@@ -254,7 +254,7 @@ class HttpClient:NSOperation,NSURLConnectionDataDelegate{
     }
     
     static func Post(address:String,parameters:Dictionary<String,AnyObject>?,cancelToken:String?,queryPara:Dictionary<String,AnyObject>?,completion:(response:AnyObject?,urlResponse:NSHTTPURLResponse?,error:NSError?)->()) -> HttpClient{
-        let httpClient = HttpClient(address: address, method: httpMethod.Post, parameters: parameters, cache: 0,  cancelToken: cancelToken, queryPara:nil, requestOptions:nil,headerFields:nil, progress: nil, completion: completion)
+        let httpClient = HttpClient(address: address, method: httpMethod.Post, parameters: parameters, cache: 0,  cancelToken: cancelToken, queryPara:queryPara, requestOptions:nil,headerFields:nil, progress: nil, completion: completion)
         httpClient.requestPath = httpClient.operationRequest?.URL?.absoluteString
         self.operationQueue.addOperation(httpClient)
         return httpClient
@@ -600,7 +600,10 @@ class HttpClient:NSOperation,NSURLConnectionDataDelegate{
             {
                 var baseAddress = operationRequest!.URL!.absoluteString
                 if queryParameters!.count > 0{
-                    baseAddress = baseAddress + "?\(parameterStringForDictionary(queryParameters!))"
+                    let range =  (baseAddress as NSString).rangeOfString("?")
+                    let containPara = range.length > 0
+                    let sign = containPara ? "&" : "?"
+                    baseAddress = baseAddress + sign + parameterStringForDictionary(queryParameters!)
                     operationRequest!.URL = NSURL(string: baseAddress)
                 }
             }
