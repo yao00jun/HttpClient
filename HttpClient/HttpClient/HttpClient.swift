@@ -817,10 +817,11 @@ extension NSData{
             var buffer:UnsafeMutablePointer<Int> = UnsafeMutablePointer<Int>()
             self.getBytes(&buffer, length: 4)
             print(buffer)
-            switch  (buffer.debugDescription){
-                case "0x0000000000464947": return "gif"
-                case "0x00000000474e5089": return "png"
-                case "0x00000000e0ffd8ff": return "jpg"
+            let imageType = buffer.debugDescription;
+            switch  (imageType as NSString).substringWithRange(NSMakeRange((imageType as NSString).length - 8, 8)){
+            case "e0ffd8ff": return "jpg"
+            case "474e5089": return "png"
+            case "00464947": return "gif"
             default: break
             }
         }
