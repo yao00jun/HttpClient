@@ -111,7 +111,7 @@ class HttpClient:NSOperation,NSURLConnectionDataDelegate{
     private var backgroundTaskIdentifier:UIBackgroundTaskIdentifier?
     private var saveDataDispatchQueue:dispatch_queue_t
     private var saveDataDispatchGroup:dispatch_group_t
-    private var operationCompletion:(response:AnyObject?,urlResponse:NSHTTPURLResponse?,error:NSError?)->()
+    private var operationCompletion:((response:AnyObject?,urlResponse:NSHTTPURLResponse?,error:NSError?)->())?
     private var operationProgress:((progress:Float)->())?
     private var queryParameters:Dictionary<String,AnyObject>?  //这个是如果使用Post上传，但是还是要在Url后面添加一些参数时的字段
     private var operationRequestOptions:Dictionary<String,AnyObject>? //这个是设置单独一次请求的相关参数，又如超时，缓存方式等
@@ -173,8 +173,6 @@ class HttpClient:NSOperation,NSURLConnectionDataDelegate{
     static func setGlobalPassword(pass:String){
         HttpClient.GlobalPassword = pass
     }
-    
-
     
     static func cancelRequestsWithPath(path:String){
         for queue in HttpClient.operationQueue.operations{
@@ -288,8 +286,16 @@ class HttpClient:NSOperation,NSURLConnectionDataDelegate{
         return httpClient
     }
     
+    private override init(){
+        saveDataDispatchGroup = dispatch_group_create()
+        saveDataDispatchQueue = dispatch_queue_create("HttpClient", DISPATCH_QUEUE_SERIAL)
+        timeoutInterval = 20
+        cachePolicy = HttpClient.GlobalCachePolicy
+        super.init()
+    }
+    
     // MARK: private func
-    private init(address:String,method:httpMethod,parameters:Dictionary<String,AnyObject>?, cache:Int,cancelToken:String?,queryPara:Dictionary<String,AnyObject>?, requestOptions:Dictionary<String,AnyObject>?,headerFields:Dictionary<String,AnyObject>?, progress:((progress:Float)->())?,completion:(response:AnyObject?,urlResponse:NSHTTPURLResponse?,error:NSError?)->()){
+    private init(address:String,method:httpMethod,parameters:Dictionary<String,AnyObject>?, cache:Int,cancelToken:String?,queryPara:Dictionary<String,AnyObject>?, requestOptions:Dictionary<String,AnyObject>?,headerFields:Dictionary<String,AnyObject>?, progress:((progress:Float)->())?,completion:((response:AnyObject?,urlResponse:NSHTTPURLResponse?,error:NSError?)->())?){
         operationCompletion = completion
         operationProgress = progress
         operationParameters = parameters
@@ -563,7 +569,7 @@ class HttpClient:NSOperation,NSURLConnectionDataDelegate{
                 
             }
             if  !self.cancelled {
-                self.operationCompletion(response: response, urlResponse: self.operationURLResponse, error: serverError)
+                self.operationCompletion!(response: response, urlResponse: self.operationURLResponse, error: serverError)
             }
             self.finish()
         })
@@ -828,3 +834,25 @@ extension NSData{
         return nil
     }
 }
+
+
+public class Hclient {
+    var httpclient:HttpClient!
+    var url:String!
+    var method:httpMethod!
+    public static func Get(url:String)->Hclient{
+        let h = Hclient()
+        h.url = url
+        h.method = .Get
+        return h
+    }
+    public static func Post(url:String)->Hclient{
+        let h = Hclient()
+        h.url = url
+        h.method = .Post
+        return h
+    }
+    //这个函数式请求功能和现在的HttpClient暂时不太兼容,以后再做
+    
+}
+
