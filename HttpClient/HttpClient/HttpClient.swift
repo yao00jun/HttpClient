@@ -311,8 +311,7 @@ class HttpClient:NSOperation,NSURLConnectionDataDelegate{
             operationRequest = NSMutableURLRequest(URL: url)
         }
         else{
-             assert(false, "you pass a invalid url")  //非法的Url
-            
+             assert(false, "you pass a invalid url")  //非法的Url 
         }
         if cache > 0{
             cacheTime = cache
@@ -836,7 +835,7 @@ extension NSData{
 }
 
 
-public class HttpClientManager {
+public class HttpClientManager:NSObject {
     private var httpclient:HttpClient!
     private var url:String!
     private var method:httpMethod!
