@@ -836,23 +836,67 @@ extension NSData{
 }
 
 
-public class Hclient {
-    var httpclient:HttpClient!
-    var url:String!
-    var method:httpMethod!
-    public static func Get(url:String)->Hclient{
-        let h = Hclient()
+public class HttpClientManager {
+    private var httpclient:HttpClient!
+    private var url:String!
+    private var method:httpMethod!
+    private var params:Dictionary<String,AnyObject>?
+    private var cacheTime:Int = 0
+    private var cancelToken:String?
+    private var queryPara:Dictionary<String,AnyObject>?
+    private  var requestOptions:Dictionary<String,AnyObject>?
+    private  var headerFields:Dictionary<String,AnyObject>?
+    private var progress:((progress:Float)->())?
+    private  var completion:((response:AnyObject?,urlResponse:NSHTTPURLResponse?,error:NSError?)->())?
+    public static func Get(url:String)->HttpClientManager{
+        let h = HttpClientManager()
         h.url = url
         h.method = .Get
         return h
     }
-    public static func Post(url:String)->Hclient{
-        let h = Hclient()
+    public static func Post(url:String)->HttpClientManager{
+        let h = HttpClientManager()
         h.url = url
         h.method = .Post
         return h
     }
-    //这个函数式请求功能和现在的HttpClient暂时不太兼容,以后再做
     
+    public func addParams(params:Dictionary<String,AnyObject>?)->HttpClientManager{
+        self.params = params
+        return self
+    }
+    
+    public func cache(cacheTime:Int)->HttpClientManager{
+        self.cacheTime = cacheTime
+         return self
+    }
+    
+    public func cancelToken(cancelToken:String?)->HttpClientManager{
+        self.cancelToken = cancelToken
+         return self
+    }
+    
+    public func queryPara(queryPara:Dictionary<String,AnyObject>?)->HttpClientManager{
+        self.queryPara = queryPara
+        return self
+    }
+    public func requestOptions(requestOptions:Dictionary<String,AnyObject>?)->HttpClientManager{
+        self.requestOptions = requestOptions
+        return self
+    }
+    public func headerFields(headerFields:Dictionary<String,AnyObject>?)->HttpClientManager{
+        self.headerFields = headerFields
+        return self
+    }
+    public func progress(progress:((progress:Float)->())?)->HttpClientManager{
+        self.progress = progress
+        return self
+    }
+    public func completion(completion:((response:AnyObject?,urlResponse:NSHTTPURLResponse?,error:NSError?)->())?){
+        self.completion = completion
+        self.httpclient = HttpClient(address: url, method: method, parameters: params, cache: cacheTime, cancelToken: cancelToken, queryPara: queryPara, requestOptions: requestOptions, headerFields: headerFields, progress: progress, completion: completion)
+        self.httpclient.requestPath = self.httpclient.operationRequest?.URL?.absoluteString
+        HttpClient.operationQueue.addOperation(self.httpclient)
+    }
 }
 

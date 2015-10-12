@@ -67,6 +67,11 @@ class Setting<T>
         }
     }
     
+    internal func clear(){
+        hasValue = false
+        Setting.settingData().removeObjectForKey(self.name)
+    }
+    
     private func getStoreLevel()->Int
     {
         _ = Mirror(reflecting: self.defaultValue!);
@@ -76,6 +81,8 @@ class Setting<T>
         }
         return 1
     }
+    
+    
     
    private static func settingData()->NSUserDefaults
     {
