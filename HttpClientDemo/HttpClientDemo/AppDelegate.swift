@@ -15,7 +15,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        // Override point for customization after application launch.
+        HttpClient.setGlobalCachePolicy(NSURLRequestCachePolicy.UseProtocolCachePolicy)  // cache policy, the default value is NSURLRequestCachePolicy.UseProtocolCachePolicy
+        HttpClient.setGlobalNeedSendParametersAsJSON(false) // send post value as json the default value is false
+        HttpClient.setGlobalUsername("httpclient") //set request authentication username，default is nil (i have't test this feature)
+        HttpClient.setGlobalPassword("123456") //set request authentication password，default is nil (i have't test this feature)
+        HttpClient.setGlobalTimeoutInterval(40) // set request time out ,the default value is 20
+        HttpClient.setGlobalUserAgent("Firefox") // set User Agent the default if HttpClient
+        window = UIWindow(frame: CGRect(x: 0, y: 0, width: UIScreen.mainScreen().bounds.size.width, height: UIScreen.mainScreen().bounds.size.height))
+        let vc = ViewController()
+        let rootNavigationController = UINavigationController(rootViewController: vc)
+        window?.rootViewController = rootNavigationController
+        window?.makeKeyAndVisible()
         return true
     }
 

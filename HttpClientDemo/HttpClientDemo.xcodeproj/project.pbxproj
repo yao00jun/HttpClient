@@ -9,19 +9,29 @@
 /* Begin PBXBuildFile section */
 		A2D1FA311C1819B8004CCE69 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2D1FA301C1819B8004CCE69 /* AppDelegate.swift */; };
 		A2D1FA331C1819B8004CCE69 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2D1FA321C1819B8004CCE69 /* ViewController.swift */; };
-		A2D1FA361C1819B8004CCE69 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A2D1FA341C1819B8004CCE69 /* Main.storyboard */; };
 		A2D1FA381C1819B9004CCE69 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A2D1FA371C1819B9004CCE69 /* Assets.xcassets */; };
 		A2D1FA3B1C1819B9004CCE69 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A2D1FA391C1819B9004CCE69 /* LaunchScreen.storyboard */; };
+		A2D1FA441C181AE9004CCE69 /* HttpClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2D1FA431C181AE9004CCE69 /* HttpClient.swift */; };
+		A2D1FA461C181D77004CCE69 /* Setting.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2D1FA451C181D77004CCE69 /* Setting.swift */; };
+		A2D1FA491C181DAC004CCE69 /* TxtViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2D1FA471C181DAC004CCE69 /* TxtViewController.swift */; };
+		A2D1FA4A1C181DAC004CCE69 /* ImgViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2D1FA481C181DAC004CCE69 /* ImgViewController.swift */; };
+		A2D1FA4C1C181DB1004CCE69 /* UploadImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2D1FA4B1C181DB1004CCE69 /* UploadImageViewController.swift */; };
+		A2D1FA4E1C181DB7004CCE69 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2D1FA4D1C181DB7004CCE69 /* Settings.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		A2D1FA2D1C1819B8004CCE69 /* HttpClientDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HttpClientDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A2D1FA301C1819B8004CCE69 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A2D1FA321C1819B8004CCE69 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		A2D1FA351C1819B8004CCE69 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		A2D1FA371C1819B9004CCE69 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A2D1FA3A1C1819B9004CCE69 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A2D1FA3C1C1819B9004CCE69 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A2D1FA431C181AE9004CCE69 /* HttpClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HttpClient.swift; sourceTree = "<group>"; };
+		A2D1FA451C181D77004CCE69 /* Setting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Setting.swift; sourceTree = "<group>"; };
+		A2D1FA471C181DAC004CCE69 /* TxtViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TxtViewController.swift; sourceTree = "<group>"; };
+		A2D1FA481C181DAC004CCE69 /* ImgViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImgViewController.swift; sourceTree = "<group>"; };
+		A2D1FA4B1C181DB1004CCE69 /* UploadImageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UploadImageViewController.swift; sourceTree = "<group>"; };
+		A2D1FA4D1C181DB7004CCE69 /* Settings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -38,6 +48,7 @@
 		A2D1FA241C1819B8004CCE69 = {
 			isa = PBXGroup;
 			children = (
+				A2D1FA421C181AE9004CCE69 /* HttpClient */,
 				A2D1FA2F1C1819B8004CCE69 /* HttpClientDemo */,
 				A2D1FA2E1C1819B8004CCE69 /* Products */,
 			);
@@ -54,14 +65,26 @@
 		A2D1FA2F1C1819B8004CCE69 /* HttpClientDemo */ = {
 			isa = PBXGroup;
 			children = (
+				A2D1FA4D1C181DB7004CCE69 /* Settings.swift */,
+				A2D1FA4B1C181DB1004CCE69 /* UploadImageViewController.swift */,
+				A2D1FA471C181DAC004CCE69 /* TxtViewController.swift */,
+				A2D1FA481C181DAC004CCE69 /* ImgViewController.swift */,
+				A2D1FA451C181D77004CCE69 /* Setting.swift */,
 				A2D1FA301C1819B8004CCE69 /* AppDelegate.swift */,
 				A2D1FA321C1819B8004CCE69 /* ViewController.swift */,
-				A2D1FA341C1819B8004CCE69 /* Main.storyboard */,
 				A2D1FA371C1819B9004CCE69 /* Assets.xcassets */,
 				A2D1FA391C1819B9004CCE69 /* LaunchScreen.storyboard */,
 				A2D1FA3C1C1819B9004CCE69 /* Info.plist */,
 			);
 			path = HttpClientDemo;
+			sourceTree = "<group>";
+		};
+		A2D1FA421C181AE9004CCE69 /* HttpClient */ = {
+			isa = PBXGroup;
+			children = (
+				A2D1FA431C181AE9004CCE69 /* HttpClient.swift */,
+			);
+			path = HttpClient;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -124,7 +147,6 @@
 			files = (
 				A2D1FA3B1C1819B9004CCE69 /* LaunchScreen.storyboard in Resources */,
 				A2D1FA381C1819B9004CCE69 /* Assets.xcassets in Resources */,
-				A2D1FA361C1819B8004CCE69 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -135,22 +157,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A2D1FA4C1C181DB1004CCE69 /* UploadImageViewController.swift in Sources */,
 				A2D1FA331C1819B8004CCE69 /* ViewController.swift in Sources */,
+				A2D1FA4E1C181DB7004CCE69 /* Settings.swift in Sources */,
+				A2D1FA441C181AE9004CCE69 /* HttpClient.swift in Sources */,
+				A2D1FA461C181D77004CCE69 /* Setting.swift in Sources */,
 				A2D1FA311C1819B8004CCE69 /* AppDelegate.swift in Sources */,
+				A2D1FA4A1C181DAC004CCE69 /* ImgViewController.swift in Sources */,
+				A2D1FA491C181DAC004CCE69 /* TxtViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		A2D1FA341C1819B8004CCE69 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				A2D1FA351C1819B8004CCE69 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		A2D1FA391C1819B9004CCE69 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -248,6 +268,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = HttpClientDemo/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = Tyrant.HttpClientDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -259,6 +280,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = HttpClientDemo/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = Tyrant.HttpClientDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
