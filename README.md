@@ -97,6 +97,13 @@ HttpClient.cancelAllRequests() //cancel all the request
 ```
   it's very simple. when you want to cancel a request, you must set the cancelToken parameter. can you'd better make the cancelToken is unique. then call the static funtion cancelRequestWithIndentity, pass the cancelToken to this funtion and the HttpClient will cancel this request. as a consequence the result block will not run.meanwhile, if you do not set the cancelToken, you can use the url to cancel the request, call the static funtion cancelRequestsWithPath and pass the url. if you want cancel all the request, call the static funtion cancelAllRequests the HttpClient will terminate all the request that is processing.
 <br/>
+#####customize the request:
+```swift
+let httpOption = [HttpClientOption.SavePath:myPath,HttpClientOption.TimeOut:NSNumber(int: 100)]
+```
+  if you do not want to obey the globel http environment, you can customize the http request very simple. there are some HttpClientOption you can set,please refer the struct HttpClientOption
+<br/>
+
 #####Set username and password:
 some website need certificate,it need user provide the username and password.you can use the global static funtion set the global username and password or store the username and password in a dictionary then pass to a specifically request
 ##### More usage please refer the HttpClientDemo
