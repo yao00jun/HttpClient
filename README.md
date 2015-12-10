@@ -75,6 +75,31 @@ if you want to use file, just pod copy the HttpClient.swift to your project .
   Second: convert the response to the NSData, accord the request result, it can be a Image NSData , Text NSData or JSON.
   Third: convert the NSData to the Model or Object and use it
   ```
+<br/>
+Or you can also use functional programming style to complete http request
+```swift
+let path: AnyObject? = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.UserDomainMask, true).first
+let myPath = (path as! NSString).stringByAppendingPathComponent("img.jpg")
+let httpOption = [HttpClientOption.SavePath:myPath,HttpClientOption.TimeOut:NSNumber(int: 100)]
+let para = ["a":"123"]
+HttpClientManager.Get("http://img1.gamersky.com/image2015/09/20150912ge_10/gamersky_45origin_89_201591217486B7.jpg").addParams(para).cache(100).requestOptions(httpOption).progress({ (progress) -> () in
+                print(progress)
+            }).completion({ (response, urlResponse, error) -> () in
+                if error != nil{
+                    print("there is a error\(error)")
+                    return
+                }
+                if let data = response as? NSData{
+                    if let result = UIImage(data: data){
+                        let tvc = ImgViewController()
+                        tvc.img = result
+                        self.navigationController?.pushViewController(tvc, animated: true)
+                    }
+                }
+                
+            })
+Unlike commom static function, use HttpClientManager functional programming style is more friendly, you do not need fill unnecessary parameters.just use . grammar. but if you use Objectice-s, more [] will mill make more improper
+```
 ###Setp4 Other operation 
 #####Cache the request:
 ```swift
@@ -101,7 +126,7 @@ HttpClient.cancelAllRequests() //cancel all the request
 ```swift
 let httpOption = [HttpClientOption.SavePath:myPath,HttpClientOption.TimeOut:NSNumber(int: 100)]
 ```
-  if you do not want to obey the globel http environment, you can customize the http request very simple. there are some HttpClientOption you can set,please refer the struct HttpClientOption
+  if you do not want to obey the globel http environment, you can customize the http request. there are some HttpClientOption you can set,please refer the struct HttpClientOption
 <br/>
 
 #####Set username and password:
