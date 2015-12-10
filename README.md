@@ -1,8 +1,23 @@
 # HttpClient
 =====
-HttpClient is a easy-to-use, high efficiency and simplify Http tool.I reference SVHTTPRequest and change some features.If these code infringement the SVHTTPRequest, please let me know. Thanks.
-######Version: 1.0.0 ,       copy right: Gforce
-##Usage
+HttpClient is a easy-to-use, high efficiency and simplify Http request class.I reference SVHTTPRequest and improve some features.
+##Key Features
+* Do not init http class, use static HttpClient class funciton complete all requests.
+* Use block complete call-back, and can watch download&upload process.
+* Support globle settings, and you can also customize http request.
+* Request cache feature and you can clear cache.
+* Can cancel all request, cancel requeset by request token.
+* Support functional programming.
+##Requirements 
+
+Xcode 7.1 and iOS 8.0(the lasted swift grammar)
+
+##Installation
+`if you want to use cocopods, just pod 'HttpClient'.`
+`if you want to use file, just pod copy the HttpClient.swift to your project .`
+<br>
+##How To Use It 
+<br>
 ###Setp1: configration the http environment
   use the HttpClient static function to configration the http environment
   ```swift
