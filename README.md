@@ -2,19 +2,22 @@
 =====
 HttpClient is a easy-to-use, high efficiency and simplify Http request class.I reference SVHTTPRequest and improve some features.
 ##Key Features
+* Inherit NSOperation.
 * Do not init http class, use static HttpClient class funciton complete all requests.
 * Use block complete call-back, and can watch download&upload process.
 * Support globle settings, and you can also customize http request.
 * Request cache feature and you can clear cache.
 * Can cancel all request, cancel requeset by request token.
 * Support functional programming.
-##Requirements 
 
+<br/>
+##Requirements 
 Xcode 7.1 and iOS 8.0(the lasted swift grammar)
 
 ##Installation
-`if you want to use cocopods, just pod 'HttpClient'.`
-`if you want to use file, just pod copy the HttpClient.swift to your project .`
+if you want to use cocopods, just pod 'HttpClient'.
+<br>
+if you want to use file, just pod copy the HttpClient.swift to your project .
 <br>
 ##How To Use It 
 <br>
@@ -73,17 +76,30 @@ Xcode 7.1 and iOS 8.0(the lasted swift grammar)
   Third: convert the NSData to the Model or Object and use it
   ```
 ###Setp4 Other operation 
-  Cache the request: pass the number than bigger 0(this is  second unit) to the Cache parameter. and make sure is Get method, the HttpClient will cache this request automatically and store the cache as NSData to the APP's Cache fold.
-    
-    
-  Cancel the request: it's very simple. when you want to cancel a request, you must set the cancelToken parameter. can you'd better make the cancelToken is unique. then call the static funtion cancelRequestWithIndentity, pass the cancelToken to this funtion and the HttpClient will cancel this request. as a consequence the result block will not run.meanwhile, if you do not set the cancelToken, you can use the url to cancel the request, call the static funtion cancelRequestsWithPath and pass the url. if you want cancel all the request, call the static funtion cancelAllRequests the HttpClient will terminate all the request that is processing.
-    
-    
-  Clear the cache: compare the cancel request, you can clear the cache manually, call the static funtion clearUrlCache(url:String) and pass the url that you have set cache, you can call the static funtion clearCache() as well, it can clear all the cache file that the HttpClient created.
-    
-    
-  Set username and password. some website need certificate,it need user provide the username and password.you can use the global static funtion set the global username and password or store the username and password in a dictionary then pass to a specifically request
-    
-    
-#####After read all the ReadMe and you can use it simply and pleasant.  you can also discovery some new features in the code. Thank you
+#####Cache the request:
+```swift
+cache: 20,
+```
+  pass the number than bigger 0(this is  second unit) to the Cache parameter. and make sure is Get method, the HttpClient will cache this request automatically and store the cache as NSData to the APP's Cache fold.
+<br/>
+#####Clear the cache:
+```swift
+HttpClient.clearUrlCache("www.baidu.com") //if you can clear one specific cache, just pass the cache url
+HttpClient.clearCache() //call  clearCache clear all the url cache
+```
+Not only set cache, you can clear the cache manually, call the static funtion clearUrlCache(url:String) and pass the url that you have set cache, you can call the static funtion clearCache() as well, it can clear all the cache file that the HttpClient created.
+<br/>
+#####Cancel the request:
+```swift
+cancelToken: "cancel", set the cancel token
+HttpClient.cancelRequestWithIndentity("cancel")  //use cancel token to cancel
+HttpClient.cancelAllRequests() //cancel all the request
+```
+  it's very simple. when you want to cancel a request, you must set the cancelToken parameter. can you'd better make the cancelToken is unique. then call the static funtion cancelRequestWithIndentity, pass the cancelToken to this funtion and the HttpClient will cancel this request. as a consequence the result block will not run.meanwhile, if you do not set the cancelToken, you can use the url to cancel the request, call the static funtion cancelRequestsWithPath and pass the url. if you want cancel all the request, call the static funtion cancelAllRequests the HttpClient will terminate all the request that is processing.
+<br/>
+#####Set username and password:
+some website need certificate,it need user provide the username and password.you can use the global static funtion set the global username and password or store the username and password in a dictionary then pass to a specifically request
+##### More usage please refer the HttpClientDemo
   
+##Contact 
+Any issue or problem please contact me:3421902@qq.com, I will be happy fix it
