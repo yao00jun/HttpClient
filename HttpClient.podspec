@@ -25,7 +25,7 @@ Pod::Spec.new do |s|
   #   * Write the description between the DESC delimiters below.
   #   * Finally, don't worry about the indent, CocoaPods strips it!
   s.description  = <<-DESC
-                  HttpClient is a easy-to-use, high efficiency and simplify Http tool.
+                  HttpClient is a easy-to-use, high efficiency and simplify Http tool. you can use it fire a http get requet, post image and other http operation
                    DESC
 
   s.homepage     = "https://github.com/DuckDeck/HttpClient"
