@@ -1,13 +1,13 @@
 # HttpClient
 =====
-######下方有中文y说明
+####下方有中文说明
 HttpClient is a easy-to-use, high efficiency and simplify Http request class.I reference SVHTTPRequest and improve some features.
 ##Key Features
 * Inherit NSOperation.
-* Do not init http class, use static HttpClient class funciton complete all requests.
-* Use block complete call-back, and can watch download&upload process.
+* Do not instantiated HttpClient class, use static HttpClient class funciton complete all http requests.
+* Use block complete call-back, and can monitor download&upload process.
 * Support globle settings, and you can also customize http request.
-* Request cache feature and you can clear cache.
+* Support cache feature by Url and clear cache.
 * Can cancel all request, cancel requeset by request token.
 * Support functional programming.
 
@@ -23,14 +23,14 @@ if you want to use file, just pod copy the HttpClient.swift to your project .
 ##How To Use It 
 <br>
 ###Setp1: configration the http environment
-  use the HttpClient static function to configration the http environment
+  use the HttpClient setGlobal serious static functions to configration the http environment
   ```swift
-  HttpClient.setGlobalCachePolicy(NSURLRequestCachePolicy.UseProtocolCachePolicy)
-  HttpClient.setGlobalNeedSendParametersAsJSON(false)
+  HttpClient.setGlobalCachePolicy(NSURLRequestCachePolicy.UseProtocolCachePolicy) //set the GlobalCachePolicy
+  HttpClient.setGlobalNeedSendParametersAsJSON(false) // set need set parameters as json
   HttpClient.setGlobalUsername("yourUserName") 
   HttpClient.setGlobalPassword("123456")
-  HttpClient.setGlobalTimeoutInterval(40)
-  HttpClient.setGlobalUserAgent("Firefox")
+  HttpClient.setGlobalTimeoutInterval(40) //all request time out
+  HttpClient.setGlobalUserAgent("Firefox") // set useragent
   ```
   if you do not configration the http environment, the HttpClient will use the default config which are:
   ```swift
@@ -99,14 +99,14 @@ HttpClientManager.Get("http://img1.gamersky.com/image2015/09/20150912ge_10/gamer
                 }
                 
             })
-Unlike commom static function, use HttpClientManager functional programming style is more friendly, you do not need fill unnecessary parameters.just use . grammar. but if you use Objectice-s, more [] will mill make more improper
+Unlike commom static function, use HttpClientManager functional programming style is more friendly, you do not need set unnecessary parameters to nil.just use . grammar. but if you use Objectice-s, more [] will mill make more improper
 ```
 ###Setp4 Other operation 
 #####Cache the request:
 ```swift
 cache: 20,
 ```
-  pass the number than bigger 0(this is  second unit) to the Cache parameter. and make sure is Get method, the HttpClient will cache this request automatically and store the cache as NSData to the APP's Cache fold.
+ HttpClient can cache the request by url, just pass the number than bigger 0(this is  second unit) to the Cache parameter(only get httpmMehod will work), the HttpClient will cache this request automatically and store the cache as NSData to the APP's Cache fold.if  you use the same url to fire another http request, HttpClient will read all data from cache
 <br/>
 #####Clear the cache:
 ```swift
@@ -121,17 +121,17 @@ cancelToken: "cancel", set the cancel token
 HttpClient.cancelRequestWithIndentity("cancel")  //use cancel token to cancel
 HttpClient.cancelAllRequests() //cancel all the request
 ```
-  it's very simple. when you want to cancel a request, you must set the cancelToken parameter. can you'd better make the cancelToken is unique. then call the static funtion cancelRequestWithIndentity, pass the cancelToken to this funtion and the HttpClient will cancel this request. as a consequence the result block will not run.meanwhile, if you do not set the cancelToken, you can use the url to cancel the request, call the static funtion cancelRequestsWithPath and pass the url. if you want cancel all the request, call the static funtion cancelAllRequests the HttpClient will terminate all the request that is processing.
+  Cancel http request while the http request is processing is a HttpClient's prime feature it's very simple. when you want to cancel a request, you must set the cancelToken parameter. can you'd better make the cancelToken is unique. then call the static funtion cancelRequestWithIndentity(token:String), pass the cancelToken to this funtion and the HttpClient will cancel this request. as a consequence the result block will not run.meanwhile, if you do not set the cancelToken, you can use the url to cancel the request, call the static funtion cancelRequestsWithPath(url:String) and pass the url. if you want cancel all the request, call the static funtion cancelAllRequests() the HttpClient will terminate all the request that is processing.
 <br/>
 #####customize the request:
 ```swift
 let httpOption = [HttpClientOption.SavePath:myPath,HttpClientOption.TimeOut:NSNumber(int: 100)]
 ```
-  if you do not want to obey the globel http environment, you can customize the http request. there are some HttpClientOption you can set,please refer the struct HttpClientOption
+  After set the globel Http environment, for some http request you do not want to obey the globel http environment, you can customize the http request. there are some HttpClientOption you can set,please refer the struct HttpClientOption
 <br/>
 
 #####Set username and password:
-some website need certificate,it need user provide the username and password.you can use the global static funtion set the global username and password or store the username and password in a dictionary then pass to a specifically request
+some website need certificate,it need user provide the username and password.you can use the global static funtion set the global username and password or store the username and password in a dictionary then pass to a specifically request(I have't test this feature)
 ##### More usage please refer the HttpClientDemo
   
 ##Contact 
