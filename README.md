@@ -201,7 +201,7 @@ Xcode 7.1 and iOS 8.0(最新的swift语法)
   complettion:(response:AnyObject?,urlResponse:NSHTTPURLResponse?,error:NSError?)->())// this is the completion handler response is a nsdata object, if error occur, the response eill be nil and you can fetch the error info from error
   ```
 ###Step3 处理回调
-  最后一步
+  最后一步使用Block处理回调
   ```swift
   HttpClient.get("http://www.baidu.com", parameters: nil, cache: 20, cancelToken: nil, complettion: { (response, urlResponse, error) -> () in
                 if error != nil{
@@ -215,12 +215,12 @@ Xcode 7.1 and iOS 8.0(最新的swift语法)
                 }
             })
 
-  First: check the error filed, if error exist, handle the error and display the correct message to the user
-  Second: convert the response to the NSData, accord the request result, it can be a Image NSData , Text NSData or JSON.
-  Third: convert the NSData to the Model or Object and use it
+  第一: 检查是否有错误产生, 如果发生错误, 处理错误同时将错误信息显示出来
+  第二: 将 response 转换成Image NSData , Text NSData or JSON.
+  第三: 再将其转换成Model或者object使用
   ```
 <br/>
-Or you can also use functional programming style to complete http request
+同时你也可以用函数式风格来编程
 ```swift
 let path: AnyObject? = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.UserDomainMask, true).first
 let myPath = (path as! NSString).stringByAppendingPathComponent("img.jpg")
@@ -242,40 +242,40 @@ HttpClientManager.Get("http://img1.gamersky.com/image2015/09/20150912ge_10/gamer
                 }
                 
             })
-Unlike commom static function, use HttpClientManager functional programming style is more friendly, you do not need fill unnecessary parameters.just use . grammar. but if you use Objectice-s, more [] will mill make more improper
+不像那些普通静态方法, 使用 HttpClientManager 函数式编程风格使用体验更加友好,你不需要使用null来传递你不需要传的参数，直接 . 语法就行.但是如果你是用Objective-c的话，太多的 [] 也许不合适
 ```
-###Setp4 Other operation 
-#####Cache the request:
+###Setp4 其他操作
+#####缓存请求:
 ```swift
 cache: 20,
 ```
-  pass the number than bigger 0(this is  second unit) to the Cache parameter. and make sure is Get method, the HttpClient will cache this request automatically and store the cache as NSData to the APP's Cache fold.
+  HttpClient可以根据Url来缓存请求，只需要在传一个比0大的数，（以秒为单位作为参数来请求。而且只有在Get模式才能使用缓存功能。HttpClient就可以在获取请求数据后将数据以NSData的形式缓存到Cahce目录里，下去再请求这个Url HttpClient会直接从缓存里读取.
 <br/>
-#####Clear the cache:
+#####清空缓存:
 ```swift
 HttpClient.clearUrlCache("www.baidu.com") //if you can clear one specific cache, just pass the cache url
 HttpClient.clearCache() //call  clearCache clear all the url cache
 ```
-Not only set cache, you can clear the cache manually, call the static funtion clearUrlCache(url:String) and pass the url that you have set cache, you can call the static funtion clearCache() as well, it can clear all the cache file that the HttpClient created.
+你不仅可以设置缓存，还可以手动清空缓存。调用静态函数clearUrlCache(url:String)传递已经缓存的Url既可。当然你也可以清空全部缓存，调用静态函数clearCache()即可，这样就能清空HttpClient产生的全部缓存.
 <br/>
-#####Cancel the request:
+#####取消请求:
 ```swift
 cancelToken: "cancel", set the cancel token
 HttpClient.cancelRequestWithIndentity("cancel")  //use cancel token to cancel
 HttpClient.cancelAllRequests() //cancel all the request
 ```
-  it's very simple. when you want to cancel a request, you must set the cancelToken parameter. can you'd better make the cancelToken is unique. then call the static funtion cancelRequestWithIndentity, pass the cancelToken to this funtion and the HttpClient will cancel this request. as a consequence the result block will not run.meanwhile, if you do not set the cancelToken, you can use the url to cancel the request, call the static funtion cancelRequestsWithPath and pass the url. if you want cancel all the request, call the static funtion cancelAllRequests the HttpClient will terminate all the request that is processing.
+  取消请求也是HttpClient一个重要的功能。合理利用这个功能可以节省大量资源。使用方式非常简单，当你有一个Http请求是需要可以取消的，那么只需要在这个请求的函数中设置cancelToken即可，同时最好设置这个calcelToken是唯一的。然后可以调用静态函数cancelRequestWithIndentity（cancelTOken:String ）传递你设置的cancelTOken .
 <br/>
-#####customize the request:
+#####个性化请求:
 ```swift
 let httpOption = [HttpClientOption.SavePath:myPath,HttpClientOption.TimeOut:NSNumber(int: 100)]
 ```
-  if you do not want to obey the globel http environment, you can customize the http request. there are some HttpClientOption you can set,please refer the struct HttpClientOption
+  在设置了全局Http请求环境后，对于有些请求你并不想让它遵守全局Http请求环境，那么你可以个性化该次请求，将个性化请求的参数放入字典中再传进去就行。具体有什么可以设置请参考结构体HttpClientOption
 <br/>
 
-#####Set username and password:
-some website need certificate,it need user provide the username and password.you can use the global static funtion set the global username and password or store the username and password in a dictionary then pass to a specifically request
-##### More usage please refer the HttpClientDemo
+#####使用用户名和密码:
+有些网站需要登录凭证，也就是请求时带是用户名和密码，这样的话你既可以用全局静态方式来设置全局的用户名密码，也能在个性化请求中设置。（这个功能尚未测试）
+#####更多的使用说明请参考HttpClientDemo
   
-##Contact 
-Any issue or problem please contact me:3421902@qq.com, I will be happy fix it
+##联系方式 
+有任何问题或者Bug请联系我 3421902@qq.com,我会很高兴为你解决问题
