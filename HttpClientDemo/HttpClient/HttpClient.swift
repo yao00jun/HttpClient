@@ -213,6 +213,10 @@ class HttpClient:NSOperation,NSURLConnectionDataDelegate{
         }
     }
     
+    static func urlCacheExist(url:String)->Bool{
+        return   NSFileManager.defaultManager().fileExistsAtPath(HttpClient.getCacheFileName(url))
+    }
+    
     static func clearCache(){
         HttpClient.sharedCacheKeyDict.removeAll(keepCapacity: false)
         var cachePath: AnyObject? = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.CachesDirectory, NSSearchPathDomainMask.UserDomainMask, true).first
