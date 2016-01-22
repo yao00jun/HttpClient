@@ -26,7 +26,7 @@
 		A2D1FA371C1819B9004CCE69 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A2D1FA3A1C1819B9004CCE69 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A2D1FA3C1C1819B9004CCE69 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		A2D1FA431C181AE9004CCE69 /* HttpClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HttpClient.swift; sourceTree = "<group>"; };
+		A2D1FA431C181AE9004CCE69 /* HttpClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HttpClient.swift; path = ../HttpClient/HttpClient.swift; sourceTree = "<group>"; };
 		A2D1FA451C181D77004CCE69 /* Setting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Setting.swift; sourceTree = "<group>"; };
 		A2D1FA471C181DAC004CCE69 /* TxtViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TxtViewController.swift; sourceTree = "<group>"; };
 		A2D1FA481C181DAC004CCE69 /* ImgViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImgViewController.swift; sourceTree = "<group>"; };
@@ -84,7 +84,8 @@
 			children = (
 				A2D1FA431C181AE9004CCE69 /* HttpClient.swift */,
 			);
-			path = HttpClient;
+			name = HttpClient;
+			path = ../HttpClient;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -306,6 +307,7 @@
 				A2D1FA411C1819B9004CCE69 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
