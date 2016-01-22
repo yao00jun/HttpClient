@@ -7,7 +7,7 @@
 //
 
 import UIKit
-enum httpMethod{
+private enum httpMethod{
     case Get
     case Post
     case Put
@@ -20,7 +20,7 @@ private enum HttpClientRequestState{
     case Finished
 }
 // 用户设定一些Option
-struct HttpClientOption {
+public struct HttpClientOption {
     static let TimeOut = "TimeOut"   // NSNumber 的Int类型  不然无效
     static let UserAgent = "UserAgent"  //String 类型
     static let CachePolicy = "CachePolicy" //当使用缓存时设置CachePolicy无效,``____`` 缓存不靠谱,我要 自己写缓存
@@ -31,7 +31,7 @@ struct HttpClientOption {
     static let UseFileName = "UseFileName"   //NSNumber 的Bool类型  不然无效
 }
 // 没有继承于NSObject，所以没有dealloc方法用
-class HttpClient:NSOperation,NSURLConnectionDataDelegate{
+public final class HttpClient:NSOperation,NSURLConnectionDataDelegate{
     //private filed
     private var _httpClientRequestState:HttpClientRequestState = HttpClientRequestState.Ready
     private var httpClientRequestState:HttpClientRequestState    {
@@ -362,7 +362,7 @@ class HttpClient:NSOperation,NSURLConnectionDataDelegate{
         //这个地方以后需要研究
     }
     
-    override func start() {
+    public override func start() {
         if cancelled{
             finish()
             return
@@ -466,7 +466,7 @@ class HttpClient:NSOperation,NSURLConnectionDataDelegate{
         didChangeValueForKey("isFinished")
     }
     //取消
-    override func cancel() {
+    public override func cancel() {
         if !isExecuting{
             return
         }
@@ -482,12 +482,12 @@ class HttpClient:NSOperation,NSURLConnectionDataDelegate{
         }
     }
     
-   func connection(connection: NSURLConnection, didReceiveResponse response: NSURLResponse) {
+  public  func connection(connection: NSURLConnection, didReceiveResponse response: NSURLResponse) {
         expectedContentLength = Float(response.expectedContentLength)
         receivedContentLength = 0
         operationURLResponse = response as? NSHTTPURLResponse
     }
-   func connection(connection: NSURLConnection, didReceiveData data: NSData) {
+   public func connection(connection: NSURLConnection, didReceiveData data: NSData) {
         dispatch_group_async(saveDataDispatchGroup, saveDataDispatchQueue) { () -> Void in
             if self.operationSavePath != nil{
                 //try tatch
@@ -517,13 +517,13 @@ class HttpClient:NSOperation,NSURLConnectionDataDelegate{
         }
     }
 
-    func connection(connection: NSURLConnection, didSendBodyData bytesWritten: Int, totalBytesWritten: Int, totalBytesExpectedToWrite: Int) {
+     public func connection(connection: NSURLConnection, didSendBodyData bytesWritten: Int, totalBytesWritten: Int, totalBytesExpectedToWrite: Int) {
         if operationProgress != nil && operationRequest!.HTTPMethod == "POST"{
             operationProgress!(progress: Float(totalBytesWritten) / Float(totalBytesExpectedToWrite))
         }
     }
     
-    func connectionDidFinishLoading(connection: NSURLConnection) {
+    public func connectionDidFinishLoading(connection: NSURLConnection) {
         dispatch_group_notify(saveDataDispatchGroup, saveDataDispatchQueue) { () -> Void in
             var response = NSData(data: self.operationData!)
             var error:NSError?
@@ -552,7 +552,7 @@ class HttpClient:NSOperation,NSURLConnectionDataDelegate{
             self.callCompletionBlockWithResponse(response, error: error)
         }
     }
-   func connection(connection: NSURLConnection, didFailWithError error: NSError) {
+   public func connection(connection: NSURLConnection, didFailWithError error: NSError) {
         callCompletionBlockWithResponse(nil, error: error)
     }
     
@@ -577,7 +577,7 @@ class HttpClient:NSOperation,NSURLConnectionDataDelegate{
             self.finish()
         })
     }
-    override var asynchronous:Bool{
+    public override var asynchronous:Bool{
         get{
             return true
         }
