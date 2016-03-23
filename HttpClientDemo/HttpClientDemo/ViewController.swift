@@ -39,10 +39,10 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
         navigationItem.title = "操作"
         tbMain.frame = CGRect(x: 0, y: 0, width: UIScreen.mainScreen().bounds.size.width, height: UIScreen.mainScreen().bounds.height - 50)
         view.addSubview(tbMain)
-        let btnBar = UIBarButtonItem(title: "取消", style: UIBarButtonItemStyle.Plain, target: self, action: "cancelRequest")
-        let btnClearCache = UIBarButtonItem(title: "缓存", style: UIBarButtonItemStyle.Plain, target: self, action: "clearCache")
+        let btnBar = UIBarButtonItem(title: "取消", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(ViewController.cancelRequest))
+        let btnClearCache = UIBarButtonItem(title: "缓存", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(ViewController.clearCache))
         navigationItem.rightBarButtonItems = [btnBar,btnClearCache]
-        let btnClearKey = UIBarButtonItem(title: "清空Key", style: UIBarButtonItemStyle.Plain, target: self, action: "clearKey")
+        let btnClearKey = UIBarButtonItem(title: "清空Key", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(ViewController.clearKey))
         navigationItem.leftBarButtonItem = btnClearKey
     }
 

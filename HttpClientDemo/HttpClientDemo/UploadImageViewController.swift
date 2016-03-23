@@ -29,7 +29,7 @@ class UploadImageViewController: UIViewController {
     var segImageType:UISegmentedControl{
         if _segImageType == nil{
             _segImageType  = UISegmentedControl(items: ["JPG","PNG","GIF"])
-            _segImageType?.addTarget(self, action: "segChoose:", forControlEvents: UIControlEvents.ValueChanged)
+            _segImageType?.addTarget(self, action: #selector(UploadImageViewController.segChoose(_:)), forControlEvents: UIControlEvents.ValueChanged)
         }
         return _segImageType!
     }
@@ -42,8 +42,8 @@ class UploadImageViewController: UIViewController {
         view.addSubview(progressUploadImage)
         view.backgroundColor = UIColor.whiteColor()
         navigationItem.title = "上传图片"
-        let btnUpload = UIBarButtonItem(title: "上传", style: UIBarButtonItemStyle.Plain, target: self, action: "upload")
-        let btnCancel = UIBarButtonItem(title: "取消", style: UIBarButtonItemStyle.Plain, target: self, action: "cancel")
+        let btnUpload = UIBarButtonItem(title: "上传", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(UploadImageViewController.upload))
+        let btnCancel = UIBarButtonItem(title: "取消", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(UploadImageViewController.cancel))
         navigationItem.rightBarButtonItems = [btnCancel,btnUpload]
         segImageType.frame = CGRect(x: 0, y: 120, width: UIScreen.mainScreen().bounds.width, height: 30)
         segImageType.selectedSegmentIndex = 0

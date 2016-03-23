@@ -400,7 +400,7 @@ public final class HttpClient:NSOperation,NSURLConnectionDataDelegate{
             }
         }
         operationData = NSMutableData() //即使保存数据,也是要加载的
-        timeoutTimer = NSTimer.scheduledTimerWithTimeInterval(timeoutInterval, target: self, selector: "requestTimeout", userInfo: nil, repeats: false)
+        timeoutTimer = NSTimer.scheduledTimerWithTimeInterval(timeoutInterval, target: self, selector: #selector(HttpClient.requestTimeout), userInfo: nil, repeats: false)
         operationRequest?.timeoutInterval = timeoutInterval
         operationRequest?.cachePolicy = cachePolicy
         setHeadField()
@@ -584,7 +584,7 @@ public final class HttpClient:NSOperation,NSURLConnectionDataDelegate{
     }
     //增加任务数
     private  func increaseTaskCount(){
-        HttpClient.taskCount++
+        HttpClient.taskCount += 1
         toggleNetworkActivityIndicator()
     }
     private  func toggleNetworkActivityIndicator(){
@@ -593,7 +593,7 @@ public final class HttpClient:NSOperation,NSURLConnectionDataDelegate{
         })
     }
     private func decreaseTaskCount(){
-        HttpClient.taskCount--
+        HttpClient.taskCount -= 1
         toggleNetworkActivityIndicator()
     }
     func synchronized(lock:AnyObject,closure:()->()){
@@ -687,7 +687,7 @@ public final class HttpClient:NSOperation,NSURLConnectionDataDelegate{
                             }
                             postData.appendData(value as! NSData)
                             postData.appendData(NSString(string: "\r\n").dataUsingEncoding(NSUTF8StringEncoding)!)
-                            dataIdx++
+                            dataIdx += 1
                         }
                     }
                     postData.appendData(NSString(format: "--%@--\r\n", boundary).dataUsingEncoding(NSUTF8StringEncoding)!)
@@ -823,7 +823,7 @@ extension Array{
 extension NSData{
     func getImageType()->String?{
         if self.length > 4{
-            var buffer:UnsafeMutablePointer<Int> = UnsafeMutablePointer<Int>()
+            var buffer:UnsafeMutablePointer<Int> = nil
             self.getBytes(&buffer, length: 4)
             print(buffer)
             let imageType = buffer.debugDescription;
