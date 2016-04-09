@@ -336,8 +336,11 @@ public final class HttpClient:NSOperation,NSURLConnectionDataDelegate{
             for (key,value) in requestOptions!{
                 switch key{
                 case HttpClientOption.SavePath: operationSavePath = value as? String
-                case HttpClientOption.CachePolicy:  if let policy = value as? NSURLRequestCachePolicy{
-                    cachePolicy = policy
+                case HttpClientOption.CachePolicy:
+                    if let policyValue = value as? NSURLRequestCachePolicy.RawValue{
+                        if let policy = NSURLRequestCachePolicy(rawValue: policyValue){
+                            cachePolicy = policy
+                        }
                     }
                 case HttpClientOption.Password:  Password = value as? String
                 case HttpClientOption.SendParametersAsJSON:sendParametersAsJSON = value as? Bool

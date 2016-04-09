@@ -80,9 +80,14 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
         case "getImage":
             let path: AnyObject? = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.UserDomainMask, true).first
             let myPath = (path as! NSString).stringByAppendingPathComponent("img.jpg")
-            let httpOption = [HttpClientOption.SavePath:myPath,HttpClientOption.TimeOut:NSNumber(int: 100)]
+           let httpOption = [HttpClientOption.SavePath:myPath,HttpClientOption.TimeOut:NSNumber(int: 100)]
+            let httpOption2:[String:AnyObject] = [HttpClientOption.CachePolicy:NSURLRequestCachePolicy.ReloadIgnoringLocalAndRemoteCacheData.rawValue]
             let para = ["a":"123"]
-            HttpClient.get("http://img1.gamersky.com/image2015/05/20150523ge_4/gamersky_10origin_19_20155231446302.jpg", parameters: para, cache: 100, cancelToken: "img", requestOptions: httpOption, headerFields: nil, progress: { (progress) -> () in
+            //Issue0
+            //对于这个Url:http://121.201.35.139/action_lib/m/3.0/login/loginAction.php?action=logincaptcha&j=113.988081&i=233&w=22.556981&iHeight=34&sCardId=100065203&v=3.1.0&iWidth=85&d=281d34a7%20c5f8d1c4%20d9b9b5a1%20b6f31806%2023ded50d%20376d8a0e%2022c8ec01%2082dd8563&t=1
+            //返回的并不是jpg或者img,而是NSData的数据,对于HttpClient,它会自动 缓存这个NSData,只要Url没有变,它所有请求都不会再去请求网络,都是直接返回原来的数.所以图片就一直不会变
+            //解决方案就是定制NSURLRequestCachePolicy,调成成ReloadIgnoringLocalAndRemoteCacheData就行了,那术HttpClien需要重新调整下.
+            HttpClient.get("http://img1.gamersky.com/image2016/03/20160326_hc_44_10/gamersky_050origin_099_20163261936D5F.jpg", parameters: para, cache: 0, cancelToken: "img", requestOptions: httpOption, headerFields: nil, progress: { (progress) -> () in
                 print(progress)
                 }, completion: { (response, urlResponse, error) -> () in
                     if error != nil{

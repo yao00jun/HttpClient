@@ -28,6 +28,7 @@ class ImgViewController: UIViewController {
         navigationItem.title = "图片"
         imgMain.frame = CGRect(x: 0, y: 0, width: UIScreen.mainScreen().bounds.size.width, height: UIScreen.mainScreen().bounds.height)
         view.addSubview(imgMain)
+        imgMain.contentMode = UIViewContentMode.ScaleAspectFit
         fillData()
         // Do any additional setup after loading the view.
     }
